@@ -1,0 +1,396 @@
+
+  <div class="Body">
+    <!--main-1-->
+    <div class="L-Page">
+      <div class="Tape Tape-1">
+        <div class="Box-Pack">
+          <div method="post" class="Plastic Plastic-1">
+            <div class="Mini-Box Mini-Box-1">
+              <span>
+                근무표를 수정할 수 있습니다.
+              </span>
+            </div>
+            <div class="Mini-Box Mini-Box-2">
+              <div class="Air-Cap">
+                <form class="Paper-Pack Paper-Pack-1" method="post">
+                  <div class="Text">
+                    <span>
+                      개인 근무표 수정
+                    </span>
+                  </div>
+                  <div class="Leave">
+                    <select name="name" id="videofilelist">
+                      <option value="none" selected disabled>--</option>
+                      {{#each accountuserviewmonth}}
+                      <option name="videofile" value="{{this}}">{{this}}</option>
+                      {{/each}}
+                    </select>
+                    <input type="submit" value="수정" onclick='this.form.action= "/accountmonthuserlist"'>
+                  </div>
+                </form>
+                <form class="Paper-Pack Paper-Pack-2" method="post">
+                  <div class="Text">
+                    <span>
+                      총 필요 근무시간 수정
+                    </span>
+                  </div>
+                  <div class="Leave">
+                    <input class="Input-Text" type="text" name="timechange" placeholder="입력">
+                    <input type="submit" value="수정" name="submit" onclick='this.form.action ="/accounttimechange"'>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+          <!--총 근로 시간-->
+          <div method="post" class="Plastic Plastic-2">
+            <div class="Mini-Box Mini-Box-1">
+              <span>
+                {{name}}님의 근무 기록표
+              </span>
+            </div>
+            <div class="Mini-Box Mini-Box-2">
+              <div class="Air-Cap">
+                <div class="Text Text-1">
+                  <span>{{name}}</span>
+                  <span>님의 총 근무시간</span>
+                  <span class="Time Time-1">{{accountuseworkhour}}</span>
+                </div>
+                <div class="Text Text-2">
+                  <span>{{name}}</span>
+                  <span>님의 필요 근무시간</span>
+                  <span class="Time Time-2">{{accountneeduseworkhour}}</span>
+                </div>
+                <div class="Text Text-3">
+                  <span>{{name}}</span>
+                  <span>님의 초과 근무시간</span>
+                  <span class="Time Time-3">{{accountuserovertime}}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!--표-->
+      <div class="Tape Tape-2">
+        <div class="Box-Pack">
+          <!--문구-->
+          <div class="Plastic Plastic-1">
+            <div class="Mini-Box Mini-Box-1 B-Line">
+              날짜
+            </div>
+            <div class="Mini-Box Mini-Box-2 B-Line">
+              출근
+            </div>
+            <div class="Mini-Box Mini-Box-3 B-Line">
+              퇴근
+            </div>
+            <div class="Mini-Box Mini-Box-4">
+              시간
+            </div>
+          </div>
+          <!--시간 시작-->
+          {{#each accountcommentarray}}
+          <div class="Plastic Plastic-2">
+            <div class="Mini-Box Mini-Box-1 B-Line">
+              {{this.Date}}
+            </div>
+            <div class="Mini-Box Mini-Box-2 B-Line">
+              {{this.Start}}
+            </div>
+            <div class="Mini-Box Mini-Box-3 B-Line">
+              {{this.End}}
+            </div>
+            <div class="Mini-Box Mini-Box-4">
+              {{this.hours}}
+            </div>
+          </div>
+          {{/each}}
+        </div>
+      </div>
+
+      <!--식대카드-->
+      <div class="Tape Tape-3">
+        <div class="Box-Pack">
+          <div class="Plastic Plastic-1">
+            식대 카드 사용을 희망할 경우 박스를 체크 해주세요
+          </div>
+          <form class="Plastic Plastic-2" method="post">
+            <div class="Mini-Box Mini-Box-1">
+              <div class="Air-Cap Air-Cap-1">
+                <input type='checkbox' name='lunch' value='dog'>
+                점심 카드 신청
+              </div>
+              <div class="Air-Cap Air-Cap-2">
+                <input type='checkbox' name='dinner' value='dog'>
+                저녁 카드 신청
+              </div>
+            </div>
+            <div class="Mini-Box Mini-Box-2">
+              <div class="Pl-Box Pl-Box-1">
+                <!--1-->
+                <div class="Pl-Sticker Pl-Sticker-1">
+                  <input type="submit" value="등록" name="submit" onclick='this.form.action ="/lunch"'>
+                  <div class="Air-Cap">
+                    <span>|</span>
+                    {{#each luncharray}}
+                    <div class="Name">
+                      <span>{{this}}</span>
+                      <span>|</span>
+                    </div>
+                    {{/each}}
+                    
+                  </div>
+                </div>
+                <!--2-->
+                <div class="Pl-Sticker Pl-Sticker-2">
+                  <input type="submit" value="등록" name="submit" onclick='this.form.action ="/lunch"'>
+                  <div class="Air-Cap">
+                    <span>|</span>
+                   {{#each dinnerarray}}
+                    <div class="Name">
+                      <span>{{this}}</span>
+                      <span>|</span>
+                    </div>
+                     {{/each}}
+                    
+                  </div>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <!--main-2-->
+    <div class="R-Page">
+      <div class="Tape Tape-1">
+        <div class="Box-Pack">
+          <!--근무표를 수정할 수 있습니다-->
+          <div class="Plastic Plastic-1">
+            <div class="Mini-Box Mini-Box-1">
+              <span>
+                근무표를 수정할 수 있습니다.
+              </span>
+            </div>
+            <div class="Mini-Box Mini-Box-2">
+              <div class="Air-Cap">
+                <form method="post" class="Paper-Pack Paper-Pack-1">
+                  <div class="Text">
+                    <span>
+                      팀원 관리
+                    </span>
+                  </div>
+                  <div class="Leave">
+                    <select name="name" id="videofilelist">
+                      <option value="none" selected disabled>--</option>
+                      {{#each accountlist}}
+                      <option name="videofile" value="{{this}}">{{this}}</option>
+                      {{/each}}
+                    </select>
+                    <input type="submit" value="보기" onclick='this.form.action= "/accountchangerecord"'>
+                  </div>
+                </form>
+                <form method="post" class="Paper-Pack Paper-Pack-2">
+                  <div class="Text">
+                    <span>
+                      팀원 근무표 달력 변경
+                    </span>
+                  </div>
+                  <div class="Leave">
+                    <select name="name" id="videofilelist">
+                      <option value="none" selected disabled>--</option>
+                      {{#each accountnameviewmonth}}
+                      <option name="videofile" value="{{this}}">{{this}}</option>
+                      {{/each}}
+                    </select>
+                    <input type="submit" value="보기" onclick='this.form.action= "/accountnameviewmonth"'>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+          <!--총 근로 시간-->
+          <div method="post" class="Plastic Plastic-2">
+            <div class="Mini-Box Mini-Box-1">
+              <span>
+                {{accountuser}}님의 근무 기록표
+              </span>
+            </div>
+            <div class="Mini-Box Mini-Box-2">
+              <div class="Air-Cap">
+                <div class="Text Text-1">
+                  <span>{{accountuser}}</span>
+                  <span>님의 총 근무시간</span>
+                  <span class="Time Time-1">{{accountchdrmsan}}</span>
+                </div>
+                <div class="Text Text-2">
+                  <span>{{accountuser}}</span>
+                  <span>님의 필요 근무시간</span>
+                  <span class="Time Time-2">{{accountneedchdrmsan}}</span>
+                </div>
+                <div class="Text Text-3 Activ-B Activ-B-1">
+                  <span>
+                    마우스를 올려주세요!
+                  </span>
+                  <div class="Text-Box Text-Box-1">
+
+                    <div class="Paper">
+                      <span class="Text Text-1">
+                        박찬종님
+                      </span>
+                      <span class="Text Text-2">
+                        160.30
+                      </span>
+                    </div>
+
+                    <div class="Paper">
+                      <span class="Text Text-1">
+                        박찬종님
+                      </span>
+                      <span class="Text Text-2">
+                        160.30
+                      </span>
+                    </div>
+
+                    <div class="Paper">
+                      <span class="Text Text-1">
+                        박찬종님
+                      </span>
+                      <span class="Text Text-2">
+                        160.30
+                      </span>
+                    </div>
+
+                    <div class="Paper">
+                      <span class="Text Text-1">
+                        박찬종님
+                      </span>
+                      <span class="Text Text-2">
+                        160.30
+                      </span>
+                    </div>
+
+                    <div class="Paper">
+                      <span class="Text Text-1">
+                        박찬종님
+                      </span>
+                      <span class="Text Text-2">
+                        160.30
+                      </span>
+                    </div>
+
+                    <div class="Paper">
+                      <span class="Text Text-1">
+                        박찬종님
+                      </span>
+                      <span class="Text Text-2">
+                        160.30
+                      </span>
+                    </div>
+
+                    <div class="Paper">
+                      <span class="Text Text-1">
+                        박찬종님
+                      </span>
+                      <span class="Text Text-2">
+                        160.30
+                      </span>
+                    </div>
+
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!--표-->
+      <div class="Tape Tape-2">
+        <div class="Box-Pack">
+          <!--문구-->
+          <div class="Plastic Plastic-1">
+            <div class="Mini-Box Mini-Box-1 B-Line">
+              날짜
+            </div>
+            <div class="Mini-Box Mini-Box-2 B-Line">
+              출근
+            </div>
+            <div class="Mini-Box Mini-Box-3 B-Line">
+              퇴근
+            </div>
+            <div class="Mini-Box Mini-Box-4">
+              시간
+            </div>
+          </div>
+          <!--시간 시작-->
+          {{#each accountchangearray}}
+          <div class="Plastic Plastic-2">
+            <div class="Mini-Box Mini-Box-1 B-Line">
+              {{this.Date}}
+            </div>
+            <div class="Mini-Box Mini-Box-2 B-Line">
+              {{this.Start}}
+            </div>
+            <div class="Mini-Box Mini-Box-3 B-Line">
+              {{this.End}}
+            </div>
+            <div class="Mini-Box Mini-Box-4">
+              {{this.hours}}
+            </div>
+          </div>
+          {{/each}}
+          
+        </div>
+      </div>
+      <!--식대카드-->
+      <div class="Tape Tape-3">
+        <form method="post" class="Box-Pack">
+          <div class="Plastic Plastic-1">
+            근무표를 수정할 수 있습니다
+          </div>
+          <div class="Plastic Plastic-2">
+            <div class="Mini-Box Mini-Box-1">
+              <!--1-->
+              <div class="Air-Cap Air-Cap-1">
+                <div class="Text">
+                  <span>
+                    근무시간 수정
+                  </span>
+                </div>
+                <div class="Sel-Box">
+                  <input class="In In-1 In_Da" type='date' name='name' />
+                </div>
+              </div>
+              <!--2-->
+              <div class="Air-Cap Air-Cap-2">
+                <div class="Text">
+                  <span>
+                    출근시간 수정
+                  </span>
+                </div>
+                <div class="Sel-Box">
+                  <input class="In In-2" type="text" name="StartText" value="">
+                </div>
+              </div>
+              <!--3-->
+              <div class="Air-Cap Air-Cap-3">
+                <div class="Text">
+                  <span>
+                    퇴근시간 수정
+                  </span>
+                </div>
+                <div class="Sel-Box">
+                  <input class="In In-3" type="text" name="commentText" value="">
+                  <input class="Btn Btn-1" type="submit" value="수정" name="submit" onclick='this.form.action ="/accountchangermsan"'>
+                  <input class="Btn Btn-2" type="submit" value="휴가" onclick='this.form.action= "/accountvacation"'>
+                </div>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>

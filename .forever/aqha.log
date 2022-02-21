@@ -1,0 +1,40 @@
+(node:12052) Warning: Accessing non-existent property 'padLevels' of module exports inside circular dependency
+(Use `node --trace-warnings ...` to show where the warning was created)
+Express started in development at http://localhost:3000; press Ctrl-C to terminate.
+[0mGET / [36m304[0m 2.655 ms - -[0m
+[0mGET /favicon.ico [32m200[0m 0.650 ms - 6[0m
+[0mGET / [36m304[0m 0.488 ms - -[0m
+[0mGET /favicon.ico [32m200[0m 0.322 ms - 6[0m
+[0mGET / [36m304[0m 0.344 ms - -[0m
+[0mGET /favicon.ico [32m200[0m 0.391 ms - 6[0m
+[0mGET / [36m304[0m 0.443 ms - -[0m
+[0mGET /favicon.ico [32m200[0m 0.374 ms - 6[0m
+[0mGET / [36m304[0m 0.368 ms - -[0m
+[0mGET /favicon.ico [32m200[0m 0.551 ms - 6[0m
+[0mGET / [36m304[0m 0.390 ms - -[0m
+[0mGET /favicon.ico [32m200[0m 0.326 ms - 6[0m
+[0mGET / [36m304[0m 0.342 ms - -[0m
+[0mGET /favicon.ico [32m200[0m 0.295 ms - 6[0m
+[0mGET / [36m304[0m 0.344 ms - -[0m
+[0mGET /favicon.ico [32m200[0m 0.258 ms - 6[0m
+[0mGET / [36m304[0m 0.447 ms - -[0m
+[0mGET /favicon.ico [32m200[0m 0.234 ms - 6[0m
+[0mGET / [36m304[0m 0.314 ms - -[0m
+[0mGET /favicon.ico [32m200[0m 0.625 ms - 6[0m
+[0mGET / [36m304[0m 0.310 ms - -[0m
+[0mGET /favicon.ico [32m200[0m 0.278 ms - 6[0m
+[0mGET / [36m304[0m 0.202 ms - -[0m
+[0mGET /favicon.ico [32m200[0m 0.205 ms - 6[0m
+[0mGET / [36m304[0m 0.309 ms - -[0m
+[0mGET /favicon.ico [32m200[0m 0.265 ms - 6[0m
+[0mGET / [36m304[0m 0.478 ms - -[0m
+[0mGET /favicon.ico [32m200[0m 0.226 ms - 6[0m
+[0mGET / [36m304[0m 0.318 ms - -[0m
+[0mGET /favicon.ico [32m200[0m 0.298 ms - 6[0m
+[0mGET / [36m304[0m 0.286 ms - -[0m
+[0mGET /favicon.ico [32m200[0m 0.288 ms - 6[0m
+[0mGET / [36m304[0m 0.365 ms - -[0m
+[0mGET /favicon.ico [32m200[0m 0.322 ms - 6[0m
+[0mGET / [36m304[0m 0.280 ms - -[0m
+[0mGET /favicon.ico [32m200[0m 0.213 ms - 6[0m
+error: Forever detected script exited with code: 1
