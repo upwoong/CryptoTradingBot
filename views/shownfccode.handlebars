@@ -1,0 +1,28 @@
+<form method="post">
+<input type="text" id="shownfc" name="nfccode" readonly>
+ <input type="text" name="name" placeholder="이름">
+    <select name="department" id="videofilelist">
+        <option value="none" selected disabled>--</option>
+        {{#each department}}
+        <option name="videofile" value="{{this}}">{{this}}</option>
+        {{/each}}
+    </select>
+    <select name="position" id="videofilelist">
+        <option value="none" selected disabled>--</option>
+        {{#each position}}
+        <option name="videofile" value="{{this}}">{{this}}</option>
+        {{/each}}
+    </select>
+    <input type="submit" value="등록" name="submit" onclick='this.form.action ="/plusnfccard"'>
+</form>
+
+
+<script src="/socket.io/socket.io.js"></script>
+<script>
+    var socket = io();
+      socket.on('getnfc', (msg) => {
+    var shownfc = document.getElementById('shownfc');
+
+    shownfc.value = msg;
+  });
+</script>
