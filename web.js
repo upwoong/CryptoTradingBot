@@ -16,7 +16,6 @@ app.use(cors({
     origin: true,
     credentials: true
 }))
-const rsi = require('technicalindicators')
 process.setMaxListeners(15);
 const { constants } = require('http2');
 const { response } = require('express')
