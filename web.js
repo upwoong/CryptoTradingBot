@@ -312,9 +312,25 @@ app.post('/startm', function (req, res) {
         `, 'utf-8', function (error) {
             console.log("success")
         });
+        var testFolder= '.'; // 불러올 폴더의 위치(..은 이전 폴더, .은 현재 폴더)
+
+fs.readdir(testFolder, function(err, filelist){  // 배열 형태로 출력
+
+        console.log(filelist);
+
+})
+
         console.log(pay)
         let req = await fetchAge(nickname)
         console.log(__dirname);
+        var testFolder= '.'; // 불러올 폴더의 위치(..은 이전 폴더, .은 현재 폴더)
+
+fs.readdir(testFolder, function(err, filelist){  // 배열 형태로 출력
+
+        console.log(filelist);
+
+})
+
             const getjs = require(`./home/hosting_users/solverduo/apps/solverduo_solverduo/upwoong.js`)
             setapi(pay)
             
@@ -342,7 +358,7 @@ app.post('/stopm',function(req,res){
     })
     res.redirect('Rsi')
 })
-console.log(__dirname);
+
 function RSIFunc() {
     let aaaa = 0
     request(options, function (error, response, body) {
