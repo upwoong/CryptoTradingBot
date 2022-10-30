@@ -1,7 +1,7 @@
-let getjs = require('./script/getRSI')
+let getjs = require('../script/getRSI')
 const request = require('request')
-const mongo = require("./script/mongo")
-const Setapi = require("./script/Setapi")
+const mongo = require("../script/mongo")
+const Setapi = require("../script/Setapi")
 let value = 0
 
 /**
@@ -14,9 +14,9 @@ let value = 0
 let coinvalue = 1
 let selectcoin = "KRW-BTC"
 let coinquantity = 1
-setTimeout(() => {
+module.exports.func123 = function(say,name){
     setInterval(function () {
-        Setapi.setapi("KRW-BTC")
+        Setapi.setapi(say)
         request(options, function (error, response, body) {
             mongo.Userwallet.findOne({ Username: "aaa" }, (err, users) => {
                 mongo.Usertransaction.findOne({ Username: "aaa" }, (err, acc) => {
@@ -107,8 +107,8 @@ setTimeout(() => {
 
         })
     }, 1000);
-}, 3000);
-
+}
+    
 function changef() {
     mongo.Userwallet.findOne({ Username: "aaa" }, (err, users) => {
         users.buycooltime = "true"

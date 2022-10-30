@@ -9,17 +9,16 @@ db.once('open', function callback() {
 })
 
 const useraccount = new mongoose.Schema({
-    Year: String,
-    Month: String,
-    Day: String,
+    Birthday : String,
     Username: String,
+    Id : String,
     password: String
 })
 
 const userwallet = new mongoose.Schema({
     Username: String,
     Money: Number,
-    cooltime : String,
+    buycooltime : String,
     Holdcoin: [{
         coinname: String, //코인이름
         coinquantity: Number, //보유수량
