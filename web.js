@@ -179,7 +179,7 @@ app.post('/startm', function (req, res) {
     let pay = req.body.pay
     let name = req.body.name
     async function funfs(nickname, age) {
-        fs.writeFile(`./${nickname}.js`, `let getjs = require('./script/getRSI')
+        fs.writeFile(`/home/hosting_users/solverduo/apps/solverduo_solverduo/macrofolder/${nickname}.js`, `let getjs = require('./script/getRSI')
         const request = require('request')
         const mongo = require("./script/mongo")
         const Setapi = require("./script/Setapi")
@@ -315,12 +315,12 @@ app.post('/startm', function (req, res) {
         console.log(pay)
         let req = await fetchAge(nickname)
         console.log(__dirname);
-        var testFolder = './home/hosting_users/solverduo/apps/solverduo_solverduo'; // 불러올 폴더의 위치(..은 이전 폴더, .은 현재 폴더)
+        var testFolder = '/home/hosting_users/solverduo/apps/solverduo_solverduo/macrofolder'; // 불러올 폴더의 위치(..은 이전 폴더, .은 현재 폴더)
         fs.readdir(testFolder, function (err, filelist) {  // 배열 형태로 출력
             console.log(filelist);
         })
 
-        const getjs = require(`./home/hosting_users/solverduo/apps/solverduo_solverduo/upwoong.js`)
+        const getjs = require(`/home/hosting_users/solverduo/apps/solverduo_solverduo/macrofolder/upwoong.js`)
         setapi(pay)
 
         request(options, function (error, response, body) {
@@ -350,7 +350,7 @@ app.post('/stopm', function (req, res) {
     fs.unlink(`/home/hosting_users/solverduo/apps/solverduo_solverduo/macrofolder/aaa.js`, (err) => {
         console.log("zzzzzz")
     })
-    var testFolder = '/home/hosting_users/solverduo/apps/solverduo_solverduo/'; // 불러올 폴더의 위치(..은 이전 폴더, .은 현재 폴더)
+    var testFolder = '/home/hosting_users/solverduo/apps/solverduo_solverduo/macrofolder'; // 불러올 폴더의 위치(..은 이전 폴더, .은 현재 폴더)
     fs.readdir(testFolder, function (err, filelist) {  // 배열 형태로 출력
         console.log(filelist);
     })
