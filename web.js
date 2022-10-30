@@ -738,6 +738,7 @@ app.get('/InvestmentDetails', function (req, res) { //투자내역
 
 app.post('/signupb', function (req, res) {
     console.log(req.body)
+    console.log("aaaa")
 })
 
 app.post('/signinb', (req, res) => {
