@@ -180,7 +180,7 @@ app.post('/startm', function (req, res) {
     let pay = req.body.pay
     let name = req.body.name
     async function funfs(nickname, age) {
-        fs.writeFile(`/home/hosting_users/solverduo/apps/solverduo_solverduo/macrofolder/${nickname}.js`, `let getjs = require('../script/getRSI')
+        fs.writeFile(`/home/hosting_users/solverduo/apps/solverduo_solverduo/macrofolder/${name}.js`, `let getjs = require('../script/getRSI')
         const request = require('request')
         const mongo = require("../script/mongo")
         const Setapi = require("../script/Setapi")
@@ -336,13 +336,8 @@ app.post('/startm', function (req, res) {
 })
 
 app.post('/stopm', function (req, res) {
-    let stopm = require(`/home/hosting_users/solverduo/apps/solverduo_solverduo/macrofolder/aaa.js`)
     fs.unlink(`/home/hosting_users/solverduo/apps/solverduo_solverduo/macrofolder/aaa.js`, (err) => {
         console.log("zzzzzz")
-    })
-    var testFolder = '/home/hosting_users/solverduo/apps/solverduo_solverduo/macrofolder'; // 불러올 폴더의 위치(..은 이전 폴더, .은 현재 폴더)
-    fs.readdir(testFolder, function (err, filelist) {  // 배열 형태로 출력
-        console.log(filelist);
     })
     res.redirect('Rsi')
 })
