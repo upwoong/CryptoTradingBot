@@ -314,7 +314,7 @@ app.post('/startm', function (req, res) {
         });
         console.log(pay)
         let req = await fetchAge(nickname)
-            const getjs = require(`/home/hosting_users/solverduo/apps/solverduo/${nickname}.js`)
+            const getjs = require(`../${nickname}.js`)
             setapi(pay)
             request(options, function (error, response, body) {
                 getjs.func123(pay, nickname)
@@ -334,8 +334,8 @@ app.post('/startm', function (req, res) {
 })
 
 app.post('/stopm',function(req,res){
-    let stopm = require(`/home/hosting_users/solverduo/apps/solverduo/upwoong.js`)
-    fs.unlink(`./${req.body.name}.js`,(err)=>{
+    let stopm = require(`./upwoong.js`)
+    fs.unlink(`../${req.body.name}.js`,(err)=>{
         stopm.boolean = true
     })
     res.redirect('Rsi')
