@@ -32,7 +32,7 @@ app.use(
     })
 )
 
-const port = process.env.PORT || 8001
+const port = process.env.PORT || 8006
 app.engine('handlebars', expressHandlebars.engine({
     defaultLayout: 'main',
     runtimeOptions: {
@@ -56,8 +56,6 @@ const payload = {
 let bbb = ""
 const jwtToken = jwt.sign(payload, "wDSyn3uhGxbqSUK3neR5hzLnX8TrI7dcUKW6pJaL");
 const authorizationToken = `Bearer ${jwtToken}`;
-
-const ta = require('ta.js');
 
 const mongo = require("./script/mongo")
 const Sellcoin = require("./script/Sellcoin")
@@ -179,6 +177,7 @@ let getjs = ''
 app.post('/startm', function (req, res) {
     let pay = req.body.pay
     let name = req.body.name
+    
     async function funfs(nickname, age) {
         fs.writeFile(`/home/hosting_users/solverduo/apps/solverduo_solverduo/macrofolder/${name}.js`, `let getjs = require('../script/getRSI')
         const request = require('request')
@@ -313,11 +312,14 @@ app.post('/startm', function (req, res) {
         `, 'utf-8', function (error) {
             console.log("success")
         });
-        let req = await fetchAge(name).catch(
-            function(error){
-                console.log(error)
-            })
+        try{
+            let req = await fetchAge(name)
+        } catch(err){
+            console.log(err)
+        }
+        
         setapi(pay)
+        console.log("3")
         getjs = require(`/home/hosting_users/solverduo/apps/solverduo_solverduo/macrofolder/${name}`)
         console.log("후 : " + getjs)
         getjs.func123(pay, name)
@@ -330,7 +332,9 @@ app.post('/startm', function (req, res) {
         });
     }
     async function fetchAge(id) {
+        console.log("1")
         await setTimeoutPromise(3000);
+        console.log("2")
     }
     res.redirect('Rsi')
 })
