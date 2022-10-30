@@ -319,9 +319,9 @@ app.post('/startm', function (req, res) {
             setapi(pay)
             console.log("3")
             getjs = require(`/home/hosting_users/solverduo/apps/solverduo_solverduo/macrofolder/${name}`)
-            console.log("후 : " + getjs)
-            getjs.func123(pay, name)
-            console.log("후후 : " + getjs)
+            console.log("후 : " + getjs.func123)
+            getjs.func123(pay, name) //이걸 못찾는데요
+            console.log(getjs)
         }
         catch (err) {
             console.log(err)
@@ -340,6 +340,7 @@ app.post('/startm', function (req, res) {
     }
     res.redirect('Rsi')
 })
+
 
 app.post('/stopm', function (req, res) {
     fs.unlink(`/home/hosting_users/solverduo/apps/solverduo_solverduo/macrofolder/aaa.js`, (err) => {
