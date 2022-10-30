@@ -20,7 +20,11 @@
     "socket.io-client": "^4.5.3",
     "ta.js": "^1.10.5",
     "technicalindicators": "^3.1.0"
-  },"scripts": {
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node ./web.js"
-}
+  },
+  "author": "",
+  "license": "ISC"
 }
