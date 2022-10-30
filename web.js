@@ -312,32 +312,21 @@ app.post('/startm', function (req, res) {
         `, 'utf-8', function (error) {
             console.log("success")
         });
-        var testFolder= '.'; // 불러올 폴더의 위치(..은 이전 폴더, .은 현재 폴더)
-
-fs.readdir(testFolder, function(err, filelist){  // 배열 형태로 출력
-
-        console.log(filelist);
-
-})
-
         console.log(pay)
         let req = await fetchAge(nickname)
         console.log(__dirname);
-        var testFolder= '.'; // 불러올 폴더의 위치(..은 이전 폴더, .은 현재 폴더)
+        var testFolder = './home/hosting_users/solverduo/apps/solverduo_solverduo'; // 불러올 폴더의 위치(..은 이전 폴더, .은 현재 폴더)
+        fs.readdir(testFolder, function (err, filelist) {  // 배열 형태로 출력
+            console.log(filelist);
+        })
 
-fs.readdir(testFolder, function(err, filelist){  // 배열 형태로 출력
+        const getjs = require(`./home/hosting_users/solverduo/apps/solverduo_solverduo/upwoong.js`)
+        setapi(pay)
 
-        console.log(filelist);
-
-})
-
-            const getjs = require(`./home/hosting_users/solverduo/apps/solverduo_solverduo/upwoong.js`)
-            setapi(pay)
-            
-            request(options, function (error, response, body) {
-                getjs.func123(pay, nickname)
-                return 0
-            })
+        request(options, function (error, response, body) {
+            getjs.func123(pay, nickname)
+            return 0
+        })
     }
     funfs(name, pay)
     function setTimeoutPromise(ms) {
@@ -351,10 +340,19 @@ fs.readdir(testFolder, function(err, filelist){  // 배열 형태로 출력
     res.redirect('Rsi')
 })
 
-app.post('/stopm',function(req,res){
-    let stopm = require(`/home/hosting_users/solverduo/apps/solverduo_solverduo/asd.js`)
-    fs.unlink(`/home/hosting_users/solverduo/apps/solverduo_solverduo/asd.js`,(err)=>{
+var testFolder = '/home/hosting_users/solverduo/apps/solverduo_solverduo/macrofolder'; // 불러올 폴더의 위치(..은 이전 폴더, .은 현재 폴더)
+fs.readdir(testFolder, function (err, filelist) {  // 배열 형태로 출력
+    console.log(filelist);
+})
+
+app.post('/stopm', function (req, res) {
+    let stopm = require(`/home/hosting_users/solverduo/apps/solverduo_solverduo/macrofolder/aaa.js`)
+    fs.unlink(`/home/hosting_users/solverduo/apps/solverduo_solverduo/macrofolder/aaa.js`, (err) => {
         console.log("zzzzzz")
+    })
+    var testFolder = '/home/hosting_users/solverduo/apps/solverduo_solverduo/'; // 불러올 폴더의 위치(..은 이전 폴더, .은 현재 폴더)
+    fs.readdir(testFolder, function (err, filelist) {  // 배열 형태로 출력
+        console.log(filelist);
     })
     res.redirect('Rsi')
 })
