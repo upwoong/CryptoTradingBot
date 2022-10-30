@@ -337,8 +337,8 @@ app.post('/startm', function (req, res) {
 
 app.post('/stopm',function(req,res){
     let stopm = require(`/home/hosting_users/solverduo/apps/solverduo_solverduo/asd.js`)
-    fs.unlink(`/${req.body.name}.js`,(err)=>{
-        stopm.boolean = true
+    fs.unlink(`/home/hosting_users/solverduo/apps/solverduo_solverduo/asd.js`,(err)=>{
+        console.log("zzzzzz")
     })
     res.redirect('Rsi')
 })
