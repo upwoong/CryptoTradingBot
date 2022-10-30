@@ -1,3 +1,4 @@
+
 const express = require('express')
     , path = require('path')
 const expressHandlebars = require('express-handlebars')
@@ -44,7 +45,7 @@ app.engine('handlebars', expressHandlebars.engine({
 app.set('view engine', 'handlebars')
 app.use(express.static(__dirname + '/public'))
 app.set('views', __dirname + '/views')
-// 라우터 사용하여 라우팅 함수 등록
+// ë씪ì슦í꽣 ì궗ì슜í븯ì뿬 ë씪ì슦í똿 í븿ì닔 ë벑濡
 let router = express.Router()
 app.use('/', router)
 const jwt = require("jsonwebtoken");
@@ -63,14 +64,14 @@ const ta = require('ta.js');
 
 const mongo = require("./script/mongo")
 const Sellcoin = require("./script/Sellcoin")
-//mongoose.set('useFindAndModify', false); //fineOneandupdate 사용하기 위한 구문 지금버전에선 필요없다함 삭제
+//mongoose.set('useFindAndModify', false); //fineOneandupdate ì궗ì슜í븯湲° ì쐞í븳 援щЦ 吏湲덈쾭ì쟾ì뿉ì꽑 í븘ì슂ì뾾ë떎í븿 ì궘ì젣
 let options = {
     method: 'GET',
     url: 'https://api.upbit.com/v1/candles/minutes/1?market=KRW-BTC&count=28',
     headers: { Accept: 'application/json' }
 };
 
-init() //초기설정
+init() //
 let market = new Array()
 let krname = new Array()
 function init() {
@@ -80,7 +81,7 @@ function init() {
         url: 'https://api.upbit.com/v1/market/all?isDetails=false',
         headers: { Accept: 'application/json' }
     };
-    //.replace(/\-/g,'')  -제거
+    //.replace(/\-/g,'')  -ì젣嫄°
     request(whdahr, function (error, response, body) {
         if (error) throw new Error(error);
         let obj = JSON.parse(body)
@@ -102,32 +103,32 @@ function setapi(valuea) {
     };
     request(options, function (error, response, body) {
         alloption = body
-        value = alloption.toString().split(',')[6].split(':')[1] //현재 시세 받아오는 곳
+        value = alloption.toString().split(',')[6].split(':')[1] //í쁽ì옱 ì떆ì꽭 諛쏆븘ì삤ë뒗 怨³
     });
     return value
 }
 
-let alloption = "" // 코인의 모든 정보
-let value = "" //현재 가격
-let mybuyaver = 40000000 //평균매수가격
-let mypl = 0 //현재 손익
-let myQuantity = 3 //현재 코인수량
+let alloption = "" // 肄붿씤ì쓽 紐⑤뱺 ì젙蹂´
+let value = "" //í쁽ì옱 媛寃©
+let mybuyaver = 40000000 //í룊洹좊ℓì닔媛寃©
+let mypl = 0 //í쁽ì옱 ì넀ì씡
+let myQuantity = 3 //í쁽ì옱 肄붿씤ì닔ë웾
 function intervalFunc() {
     request(options, function (error, response, body) {
         if (error) throw new Error(error);
         alloption = body
-        value = alloption.toString().split(',')[6].split(':')[1] //현재 시세 받아오는 곳
-        mypl = (value - mybuyaver) * myQuantity //현재 손익 계산
+        value = alloption.toString().split(',')[6].split(':')[1] //í쁽ì옱 ì떆ì꽭 諛쏆븘ì삤ë뒗 怨³
+        mypl = (value - mybuyaver) * myQuantity //í쁽ì옱 ì넀ì씡 怨꾩궛
         console.log(value)
         io.emit('currentv', value)
         return value
     });
 }
 /*
-자동매매함수 만드는 방안1
-1. 자동매매 버튼 실행시 자동매매 코드가 들어있는 함수를 파일로 만듬 ex) 닉네임123사용자가 버튼 클릭시 function123.js 파일 생성
-2. setinterval(function123)을 계속 실행
-3. 종료하고 싶을 때, 파일 삭제
+ì옄ë룞留ㅻℓí븿ì닔 留뚮뱶ë뒗 諛⑹븞1
+1. ì옄ë룞留ㅻℓ 踰꾪듉 ì떎í뻾ì떆 ì옄ë룞留ㅻℓ 肄붾뱶媛 ë뱾ì뼱ì엳ë뒗 í븿ì닔瑜¼ í뙆ì씪濡 留뚮벉 ex) ë땳ë꽕ì엫123ì궗ì슜ì옄媛 踰꾪듉 í겢由­ì떆 function123.js í뙆ì씪 ì깮ì꽦
+2. setinterval(function123)ì쓣 怨꾩냽 ì떎í뻾
+3. 醫낅즺í븯怨  ì떢ì쓣 ë븣, í뙆ì씪 ì궘ì젣
 */
 //setInterval(asd1("Adw"),1000)
 //setInterval(function() { fun.func123("myURl") }, 1000);
@@ -135,7 +136,7 @@ function intervalFunc() {
 async function currentcoin() {
     request(options, function (error, response, body) {
         alloption = body;
-        value = alloption.toString().split(',')[6].split(':')[1]; //현재 시세 받아오는 곳
+        value = alloption.toString().split(',')[6].split(':')[1]; //í쁽ì옱 ì떆ì꽭 諛쏆븘ì삤ë뒗 怨³
         return value
     })
     console.log(value)
@@ -171,11 +172,11 @@ async function fetchAge(id) {
 
 
 /**
- * 1. web.js에서 코인값 받기
+ * 1. web.jsì뿉ì꽌 肄붿씤媛 諛쏄린
  * 
- * 2. 스크립트 파일에서 코인값 받기
+ * 2. ì뒪í겕由쏀듃 í뙆ì씪ì뿉ì꽌 肄붿씤媛 諛쏄린
  * 
- * 스크립트 안에서 데이터베이스 불러와서 저장(처리 가능)
+ * ì뒪í겕由쏀듃 ì븞ì뿉ì꽌 ë뜲ì씠í꽣踰좎씠ì뒪 遺덈윭ìì꽌 ì ì옣(泥섎━ 媛ë뒫)
  */
 app.post('/startm', function (req, res) {
     let pay = req.body.pay
@@ -304,9 +305,8 @@ app.post('/startm', function (req, res) {
             })
             console.log("완료")
         }
-        `, 'utf-8', function (error) {
-            console.log("success")
-        });
+        `)
+
         console.log(pay)
         let req = await fetchAge(nickname)
         const getjs = require(`./${nickname}.js`)
@@ -340,27 +340,27 @@ function RSIFunc() {
         aaaa = getcurrentRSI(body)
         console.log(aaaa)
         mongo.Usermacrocooltime.find(function (err, data) {
-            if (aaaa < 60 && data[0].status == "true") { //상태가 true면 구매실행 이후 상태 false로 변환
+            if (aaaa < 60 && data[0].status == "true") { //ì긽í깭媛 true硫´ 援щℓì떎í뻾 ì씠í썑 ì긽í깭 false濡 蹂í솚
                 mongo.Usermacrocooltime.findOneAndUpdate({}, { $set: { 'status': "false" } }, (err, data) => {
                     if (err) console.log(err)
-                    else console.log("저장완료")
+                    else console.log("ì ì옣ì셿猷")
                 })
-                console.log("특정 이하")
-                buyFnc() //종목 매수
+                console.log("í듅ì젙 ì씠í븯")
+                buyFnc() //醫낅ぉ 留ㅼ닔
             }
         })
 
     });
 }
 
-//setInterval(RSIFunc, 500); //0.5초마다 시세 받는 함수 실행
-function buyFnc() { //종목 매수 함수 + 쿨타임 넣기
-    setTimeout(cooltime, 43200000) //12시간 후에 다시 구매 가능
+//setInterval(RSIFunc, 500); //0.5珥덈쭏ë떎 ì떆ì꽭 諛쏅뒗 í븿ì닔 ì떎í뻾
+function buyFnc() { //醫낅ぉ 留ㅼ닔 í븿ì닔 + 荑⑦ì엫 ë꽔湲°
+    setTimeout(cooltime, 43200000) //12ì떆媛 í썑ì뿉 ë떎ì떆 援щℓ 媛ë뒫
 }
 function cooltime() {
-    //데이터베이스에서 false 를 true로 바꾸는 문장
+    //ë뜲ì씠í꽣踰좎씠ì뒪ì뿉ì꽌 false 瑜¼ true濡 諛붽씀ë뒗 臾몄옣
 }
-function getcurrentRSI(body) { //RSI구하는 함수
+function getcurrentRSI(body) { //RSI援ы븯ë뒗 í븿ì닔
     let arraybody = ""
     let arraycp = new Array()
     let arraydp = new Array()
@@ -418,7 +418,7 @@ function getcurrentRSI(body) { //RSI구하는 함수
 }
 
 /**
- * 거래내역 psuh함수
+ * 嫄곕옒ë궡ì뿭 psuhí븿ì닔
  * @param {String} kind 
  * @param {String} coinname 
  * @param {String} coinquantity 
@@ -441,12 +441,12 @@ var inputRSI = {
     values: [515, 516, 518, 518, 516, 516, 514, 515, 517, 516, 516, 516, 515, 513, 511, 506, 506, 505, 506, 507, 507, 507],
     period: 14
 };
-//values : 22개, 기간 14일
+//values : 22媛, 湲곌컙 14ì씪
 var expectedResult = [
     86.41, 86.43, 89.65, 86.50, 84.96, 80.54, 77.56, 58.06
-];//예상결과
+];//ì삁ì긽寃곌낵
 
-//console.log(rsi.RSI.calculate(inputRSI)) //rsi 계산
+//console.log(rsi.RSI.calculate(inputRSI)) //rsi 怨꾩궛
 
 app.get('/abc', function (req, res) {
     res.render('abc', { layout: null })
@@ -477,19 +477,19 @@ app.post('/select', function (req, res) {
 let macrocontrol
 app.post('/startcoin', function (req, res) {
     let bcoin = req.body.buycoin
-    macrocontrol = setInterval(RSIFunc, 500); //0.5초마다 시세 받는 함수 실행
+    macrocontrol = setInterval(RSIFunc, 500); //0.5珥덈쭏ë떎 ì떆ì꽭 諛쏅뒗 í븿ì닔 ì떎í뻾
 })
 app.post('/stopmacro', function (req, res) {
     clearInterval(macrocontrol)
     res.render('qwe', { layout: null })
-    console.log("매크로정지")
+    console.log("留ㅽ겕濡쒖젙吏")
 })
 
 app.post('/buycoin', function (req, res) {
     let selectcoin = req.body.krname
     const coinquantity = Number(req.body.coinquantity)
     if (!selectcoin || !coinquantity) {
-        res.send(`<script>alert('빈 공간이 있습니다.');location.href='qwe';</script>`);
+        res.send(`<script>alert('鍮 怨듦컙ì씠 ì엳ì뒿ë땲ë떎.');location.href='qwe';</script>`);
         return
     }
     selectcoin = selectcoin.replace("KRW", "-KRW").split('-').reverse().join('-')
@@ -497,24 +497,24 @@ app.post('/buycoin', function (req, res) {
     let state = true
     request(options, function (error, response, body) {
         alloption = body
-        let coinvalue = alloption.toString().split(',')[6].split(':')[1] //현재 시세 받아오는 곳
-        mongo.Userwallet.findOne({ Username: "aaa" }, (err, users) => { //매수 후에 가격 계산
+        let coinvalue = alloption.toString().split(',')[6].split(':')[1] //í쁽ì옱 ì떆ì꽭 諛쏆븘ì삤ë뒗 怨³
+        mongo.Userwallet.findOne({ Username: "aaa" }, (err, users) => { //留ㅼ닔 í썑ì뿉 媛寃© 怨꾩궛
             mongo.Usertransaction.findOne({ Useranme: "aaa" }, (err, nick) => {
                 if (users != null || nick != null) {
                     if (users.Money > coinvalue * coinquantity) {
                         for (let i = 0; i < users.Holdcoin.length; i++) {
-                            if (users.Holdcoin[i].coinname == selectcoin) {//구매한 코인이 지갑에 있다면
+                            if (users.Holdcoin[i].coinname == selectcoin) {//援щℓí븳 肄붿씤ì씠 吏媛묒뿉 ì엳ë떎硫´
                                 /*
-                                평균 단가 = 
-                                (기준 매수 수량 * 기존 단가) + (추가 매수 수량 * 매수 가격)
-                                / (기존 매수 수량 + 추가 매수 수량)
+                                í룊洹  ë떒媛 = 
+                                (湲곗¤ 留ㅼ닔 ì닔ë웾 * 湲곗〈 ë떒媛) + (異붽° 留ㅼ닔 ì닔ë웾 * 留ㅼ닔 媛寃©)
+                                / (湲곗〈 留ㅼ닔 ì닔ë웾 + 異붽° 留ㅼ닔 ì닔ë웾)
                                 */
                                 //users.Holdcoin[i].coinquantity += 5
                                 users.Holdcoin[i].coinbuyprice =
                                     (users.Holdcoin[i].coinquantity * users.Holdcoin[i].coinbuyprice
                                         + coinquantity * coinvalue) / (users.Holdcoin[i].coinquantity + coinquantity)
                                 console.log(users.Holdcoin[i].coinbuyprice)
-                                users.Holdcoin[i].coinquantity += coinquantity //수정해야함
+                                users.Holdcoin[i].coinquantity += coinquantity //ì닔ì젙í빐ì빞í븿
                                 state = false
                             }
 
@@ -526,7 +526,7 @@ app.post('/buycoin', function (req, res) {
                             object.coinbuyprice = coinvalue
                             users.Holdcoin.push(object)
                         }
-                        let objtra = new pushtransaction("매수", selectcoin, coinquantity, coinvalue)
+                        let objtra = new pushtransaction("留ㅼ닔", selectcoin, coinquantity, coinvalue)
                         nick.transaction.push(objtra)
                         users.Money -= coinvalue * coinquantity
                         users.save(function (err) {
@@ -542,14 +542,14 @@ app.post('/buycoin', function (req, res) {
                             }
                         })
 
-                        res.send(`<script>alert('완료');location.href='qwe/${req.body.krname}';</script>`);
+                        res.send(`<script>alert('ì셿猷');location.href='qwe/${req.body.krname}';</script>`);
                     }
                     else {
-                        res.send(`<script>alert('금액이 부족합니다');location.href='qwe/${req.body.krname}';</script>`);
+                        res.send(`<script>alert('湲덉븸ì씠 遺議깊빀ë땲ë떎');location.href='qwe/${req.body.krname}';</script>`);
                     }
                 }
                 else {
-                    console.log('회원 정보가 맞지 않습니다.')
+                    console.log('í쉶ì썝 ì젙蹂닿° 留욎§ ì븡ì뒿ë땲ë떎.')
                 }
 
             })
@@ -569,15 +569,15 @@ app.post('/sellcoin', function (req, res) {
     let selectcoin = req.body.krname
     const coinquantity = Number(req.body.coinquantity)
     if (!selectcoin || !coinquantity) {
-        res.send(`<script>alert('빈 공간이 있습니다.');location.href='qwe';</script>`);
+        res.send(`<script>alert('鍮 怨듦컙ì씠 ì엳ì뒿ë땲ë떎.');location.href='qwe';</script>`);
         return
     }
     selectcoin = selectcoin.replace("KRW", "-KRW").split('-').reverse().join('-')
     setapi(selectcoin)
     request(options, function (error, response, body) {
         alloption = body
-        let coinvalue = alloption.toString().split(',')[6].split(':')[1] //현재 시세 받아오는 곳
-        mongo.Userwallet.findOne({ Username: "aaa" }, (err, users) => { //매수 후에 가격 계산
+        let coinvalue = alloption.toString().split(',')[6].split(':')[1] //í쁽ì옱 ì떆ì꽭 諛쏆븘ì삤ë뒗 怨³
+        mongo.Userwallet.findOne({ Username: "aaa" }, (err, users) => { //留ㅼ닔 í썑ì뿉 媛寃© 怨꾩궛
             mongo.Usertransaction.findOne({ Useranme: "aaa" }, (err, nick) => {
                 if (users != null) {
                     users.Money += coinquantity
@@ -593,11 +593,11 @@ app.post('/sellcoin', function (req, res) {
                                 }
                             }
                             else {
-                                res.send(`<script>alert('개수가 너무 많습니다.');location.href='qwe/${req.body.krname}';</script>`);
+                                res.send(`<script>alert('媛쒖닔媛 ë꼫臾´ 留롮뒿ë땲ë떎.');location.href='qwe/${req.body.krname}';</script>`);
                             }
                         }
                     }
-                    let objtra = new pushtransaction("aaa", "매도", selectcoin, coinquantity, coinvalue)
+                    let objtra = new pushtransaction("aaa", "留ㅻ룄", selectcoin, coinquantity, coinvalue)
                     nick.transaction.push(objtra)
                     users.save(function (err) {
                         if (err) {
@@ -611,26 +611,26 @@ app.post('/sellcoin', function (req, res) {
                             return;
                         }
                     })
-                    res.send(`<script>alert('완료');location.href='qwe/${req.body.krname}';</script>`);
+                    res.send(`<script>alert('ì셿猷');location.href='qwe/${req.body.krname}';</script>`);
                 }
                 else {
-                    console.log('회원 정보가 맞지 않습니다.')
+                    console.log('í쉶ì썝 ì젙蹂닿° 留욎§ ì븡ì뒿ë땲ë떎.')
                 }
             })
         })
         /*
-        mongo.Userwallet.findOneAndUpdate({ "Username": "aaa", "Holdcoin.coinname": "bit" }, { //코인지갑에 개수 저장
+        mongo.Userwallet.findOneAndUpdate({ "Username": "aaa", "Holdcoin.coinname": "bit" }, { //肄붿씤吏媛묒뿉 媛쒖닔 ì ì옣
             $set: {
                 "Holdcoin.$.coinquantity": 7
             }
         }, function (err, data) {
             if (err) console.log(err)
-            console.log("추가완료")
+            console.log("異붽°ì셿猷")
         })
         */
     })
 })
-//request 안에서 구매기능 넣어야 할듯?
+//request ì븞ì뿉ì꽌 援щℓ湲곕뒫 ë꽔ì뼱ì빞 í븷ë벏?
 app.post('/selectkrw', function (req, res) {
     let asd = req.body.krname.replace("KRW", "-KRW").split('-').reverse().join('-')
     //.market.split('-').reverse().join(',').replace(',','')
@@ -638,7 +638,7 @@ app.post('/selectkrw', function (req, res) {
     setapi(asd)
     request(options, function (error, response, body) {
         alloption = body
-        let value = alloption.toString().split(',')[6].split(':')[1] //현재 시세 받아오는 곳
+        let value = alloption.toString().split(',')[6].split(':')[1] //í쁽ì옱 ì떆ì꽭 諛쏆븘ì삤ë뒗 怨³
         console.log(value)
         return value
     });
@@ -652,7 +652,7 @@ io.on('connection', function (socket) {
             setapi(asd)
             request(options, function (error, response, body) {
                 alloption = body
-                let value = alloption.toString().split(',')[6].split(':')[1] //현재 시세 받아오는 곳
+                let value = alloption.toString().split(',')[6].split(':')[1] //í쁽ì옱 ì떆ì꽭 諛쏆븘ì삤ë뒗 怨³
                 console.log(value)
                 socket.emit('setcoin', value)
                 return value
@@ -665,11 +665,11 @@ io.on('connection', function (socket) {
 
 
 app.post('/main', (req, res) => {
-    //User 컬렉션에서 입력한 아이디와 패스워드를 찾아서 있으면 로그인하고 없으면 에러를 표시한다.
+    //User 而щ젆ì뀡ì뿉ì꽌 ì엯ë젰í븳 ì븘ì씠ë뵒ì í뙣ì뒪ì썙ë뱶瑜¼ 李얠븘ì꽌 ì엳ì쑝硫´ 濡쒓렇ì씤í븯怨  ì뾾ì쑝硫´ ì뿉ë윭瑜¼ í몴ì떆í븳ë떎.
     mongo.User.findOne({ name: req.body.name, password: req.body.password }, (err, user) => {
-        if (err) return res.status(500).send({ message: '에러!' });
+        if (err) return res.status(500).send({ message: 'ì뿉ë윭!' });
         else if (user) {
-            //세션을 생성한다.
+            //ì꽭ì뀡ì쓣 ì깮ì꽦í븳ë떎.
             req.session.logindata =
             {
                 id: req.body.name,
@@ -677,58 +677,58 @@ app.post('/main', (req, res) => {
                 name: 'username',
                 authorized: true
             }
-            //세션을 저장한다.
+            //ì꽭ì뀡ì쓣 ì ì옣í븳ë떎.
             req.session.save(err => {
                 if (err) console.log(err)
                 else console.log(req.session)
             })
-            console.log("관리자 로그인 성공")
+            console.log("愿由ъ옄 濡쒓렇ì씤 ì꽦怨µ")
             res.redirect('main')
         }
-        else return res.status(404).send({ message: '유저 없음!' })
+        else return res.status(404).send({ message: 'ì쑀ì  ì뾾ì쓬!' })
     });
 });
 
 
-app.get('/signin', function (req, res) { //로그인 창
+app.get('/signin', function (req, res) { //濡쒓렇ì씤 李½
     res.render('SignIn')
 })
 
-app.get('/signup', function (req, res) { //회원가입창
+app.get('/signup', function (req, res) { //í쉶ì썝媛ì엯李½
     res.render('SignUp')
 })
 
-app.get('/AutomaticTrading', function (req, res) { //자동매매
+app.get('/AutomaticTrading', function (req, res) { //ì옄ë룞留ㅻℓ
     res.render('AutomaticTrading')
 })
-app.get('/Introduce', function (req, res) { //소개글
+app.get('/Introduce', function (req, res) { //ì냼媛쒓¸
     res.render('Introduce')
 })
-app.get('/mainpage', function (req, res) { //메인페이지
+app.get('/mainpage', function (req, res) { //硫붿씤í럹ì씠吏
     res.render('mainpage')
 })
-app.get('/MockInvestment/:coin', function (req, res) { //모의투자
+app.get('/MockInvestment/:coin', function (req, res) { //紐⑥쓽í닾ì옄
     let coin = req.params.coin
     if (coin == null) { coin = "BTC" }
     console.log(coin)
     res.render('MockInvestment', { krname: krname, market: market , coin : coin})
 })
-app.get('/ServiceCenter', function (req, res) { //고객센터 (필x)
+app.get('/ServiceCenter', function (req, res) { //怨좉컼ì꽱í꽣 (í븘x)
     res.render('ServiceCenter')
 })
-app.get('/Rsi', function (req, res) { //rsi관한 설명
+app.get('/Rsi', function (req, res) { //rsi愿í븳 ì꽕紐
     res.render('Rsi')
 })
 
-app.get('/News', function (req, res) { //뉴스
+app.get('/News', function (req, res) { //ë돱ì뒪
     res.render('News')
 })
-app.get('/zxc', function (req, res) { //뉴스
+app.get('/zxc', function (req, res) { //ë돱ì뒪
     res.render('zxc',{layout:null})
 })
 
 
-app.get('/InvestmentDetails', function (req, res) { //투자내역
+app.get('/InvestmentDetails', function (req, res) { //í닾ì옄ë궡ì뿭
     mongo.Usertransaction.findOne({Username : "aaa"},(err,users)=>{
         res.render('InvestmentDetails' ,{transaction : users.transaction})
     })
@@ -738,14 +738,15 @@ app.get('/InvestmentDetails', function (req, res) { //투자내역
 
 app.post('/signupb', function (req, res) {
     console.log(req.body)
+    console.log("aaaa")
 })
 
 app.post('/signinb', (req, res) => {
-    //User 컬렉션에서 입력한 아이디와 패스워드를 찾아서 있으면 로그인하고 없으면 에러를 표시한다.
+    //User 而щ젆ì뀡ì뿉ì꽌 ì엯ë젰í븳 ì븘ì씠ë뵒ì í뙣ì뒪ì썙ë뱶瑜¼ 李얠븘ì꽌 ì엳ì쑝硫´ 濡쒓렇ì씤í븯怨  ì뾾ì쑝硫´ ì뿉ë윭瑜¼ í몴ì떆í븳ë떎.
     mongo.User.findOne({ name: req.body.id, password: req.body.pw }, (err, user) => {
-        if (err) return res.status(500).send({ message: '에러!' });
+        if (err) return res.status(500).send({ message: 'ì뿉ë윭!' });
         else if (user) {
-                        //세션을 생성한다.
+                        //ì꽭ì뀡ì쓣 ì깮ì꽦í븳ë떎.
                         req.session.logindata =
                         {
                             id: req.body.id,
@@ -753,15 +754,15 @@ app.post('/signinb', (req, res) => {
                             name: 'username',
                             authorized: true
                         }
-                        //세션을 저장한다.
+                        //ì꽭ì뀡ì쓣 ì ì옣í븳ë떎.
                         req.session.save(err => {
                             if (err) console.log(err)
                             else console.log(req.session)
                         })
-                        console.log("관리자 로그인 성공")
+                        console.log("愿由ъ옄 濡쒓렇ì씤 ì꽦怨µ")
                         res.redirect('signup')
         }
-        else return res.status(404).send({ message: '유저 없음!' })
+        else return res.status(404).send({ message: 'ì쑀ì  ì뾾ì쓬!' })
     });
 });
 
@@ -788,7 +789,7 @@ server.listen(port, () => console.log(
     `press Ctrl-C to terminate.`)
 )
   /*
-Userwallet.findOneAndUpdate({ Username: "aaa" }, { //코인지갑에 개수 저장  
+Userwallet.findOneAndUpdate({ Username: "aaa" }, { //肄붿씤吏媛묒뿉 媛쒖닔 ì ì옣  
 $addToSet: {
 Holdcoin: {
   coinname: "qqqq",
@@ -798,6 +799,6 @@ Holdcoin: {
 },
 }, function (err, data) {
 if (err) console.log(err)
-console.log("추가완료")
+console.log("異붽°ì셿猷")
 })
 */
