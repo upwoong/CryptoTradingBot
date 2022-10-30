@@ -43,7 +43,6 @@ app.engine('handlebars', expressHandlebars.engine({
 app.set('view engine', 'handlebars')
 app.use(express.static(__dirname + '/public'))
 app.set('views', __dirname + '/views')
-// 라우터 사용하여 라우팅 함수 등록
 let router = express.Router()
 app.use('/', router)
 const jwt = require("jsonwebtoken");
