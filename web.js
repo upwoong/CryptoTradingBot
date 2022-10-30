@@ -315,7 +315,7 @@ app.post('/startm', function (req, res) {
         console.log(pay)
         let req = await fetchAge(nickname)
         console.log(__dirname);
-            const getjs = require(`/home/hosting_users/solverduo/apps/solverduo_solverduo/upwoong.js`)
+            const getjs = require(`./home/hosting_users/solverduo/apps/solverduo_solverduo/upwoong.js`)
             setapi(pay)
             
             request(options, function (error, response, body) {
@@ -330,7 +330,7 @@ app.post('/startm', function (req, res) {
         });
     }
     async function fetchAge(id) {
-        await setTimeoutPromise(1000);
+        await setTimeoutPromise(3000);
     }
     res.redirect('Rsi')
 })
