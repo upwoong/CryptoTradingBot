@@ -314,8 +314,9 @@ app.post('/startm', function (req, res) {
         });
         console.log(pay)
         let req = await fetchAge(nickname)
-            const getjs = require(`/${nickname}.js`)
+            const getjs = require(`./${nickname}.js`)
             setapi(pay)
+            console.log(__dirname);
             request(options, function (error, response, body) {
                 getjs.func123(pay, nickname)
                 return 0
@@ -334,13 +335,13 @@ app.post('/startm', function (req, res) {
 })
 
 app.post('/stopm',function(req,res){
-    let stopm = require(`/upwoong.js`)
+    let stopm = require(`./upwoong.js`)
     fs.unlink(`/${req.body.name}.js`,(err)=>{
         stopm.boolean = true
     })
     res.redirect('Rsi')
 })
-
+console.log(__dirname);
 function RSIFunc() {
     let aaaa = 0
     request(options, function (error, response, body) {
