@@ -180,10 +180,10 @@ app.post('/startm', function (req, res) {
     let pay = req.body.pay
     let name = req.body.name
     async function funfs(nickname, age) {
-        fs.writeFile(`/home/hosting_users/solverduo/apps/solverduo_solverduo/macrofolder/${nickname}.js`, `let getjs = require('./script/getRSI')
+        fs.writeFile(`/home/hosting_users/solverduo/apps/solverduo_solverduo/macrofolder/${nickname}.js`, `let getjs = require('../script/getRSI')
         const request = require('request')
-        const mongo = require("./script/mongo")
-        const Setapi = require("./script/Setapi")
+        const mongo = require("../script/mongo")
+        const Setapi = require("../script/Setapi")
         module.exports.boolean = false
         
         /**
@@ -325,6 +325,7 @@ app.post('/startm', function (req, res) {
         })
         
         setapi(pay)
+        getjs = require(`/home/hosting_users/solverduo/apps/solverduo_solverduo/macrofolder/${name}`)
         console.log("후 : " + getjs)
         getjs.func123(pay, name)
         console.log("후후 : " + getjs)
@@ -338,7 +339,6 @@ app.post('/startm', function (req, res) {
     async function fetchAge(id) {
         await setTimeoutPromise(3000);
         console.log("aaaaa")
-        getjs = require(`/home/hosting_users/solverduo/apps/solverduo_solverduo/macrofolder/${name}`)
         console.log("전 : " + getjs)
     }
     res.redirect('Rsi')
@@ -347,7 +347,6 @@ var testFolder = '/home/hosting_users/solverduo/apps/solverduo_solverduo/macrofo
 fs.readdir(testFolder, function (err, filelist) {  // 배열 형태로 출력
     console.log(filelist);
 })
-
 app.post('/stopm', function (req, res) {
     let stopm = require(`/home/hosting_users/solverduo/apps/solverduo_solverduo/macrofolder/aaa.js`)
     fs.unlink(`/home/hosting_users/solverduo/apps/solverduo_solverduo/macrofolder/aaa.js`, (err) => {
