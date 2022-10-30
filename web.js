@@ -167,7 +167,7 @@ async function fetchAge(id) {
 
 
 
-
+console.log("aaaaaaaaaaaaaaa")
 /**
  * 1. web.js에서 코인값 받기
  * 
@@ -317,12 +317,6 @@ app.post('/startm', function (req, res) {
             function(error){
                 console.log(error)
             })
-        console.log(__dirname);
-        var testFolder = '/home/hosting_users/solverduo/apps/solverduo_solverduo/macrofolder'; // 불러올 폴더의 위치(..은 이전 폴더, .은 현재 폴더)
-        fs.readdir(testFolder, function (err, filelist) {  // 배열 형태로 출력
-            console.log(filelist);
-        })
-        
         setapi(pay)
         getjs = require(`/home/hosting_users/solverduo/apps/solverduo_solverduo/macrofolder/${name}`)
         console.log("후 : " + getjs)
@@ -337,15 +331,10 @@ app.post('/startm', function (req, res) {
     }
     async function fetchAge(id) {
         await setTimeoutPromise(3000);
-        console.log("aaaaa")
-        console.log("전 : " + getjs)
     }
     res.redirect('Rsi')
 })
-var testFolder = '/home/hosting_users/solverduo/apps/solverduo_solverduo/macrofolder'; // 불러올 폴더의 위치(..은 이전 폴더, .은 현재 폴더)
-fs.readdir(testFolder, function (err, filelist) {  // 배열 형태로 출력
-    console.log(filelist);
-})
+
 app.post('/stopm', function (req, res) {
     let stopm = require(`/home/hosting_users/solverduo/apps/solverduo_solverduo/macrofolder/aaa.js`)
     fs.unlink(`/home/hosting_users/solverduo/apps/solverduo_solverduo/macrofolder/aaa.js`, (err) => {
