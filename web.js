@@ -177,7 +177,7 @@ let getjs = ''
 app.post('/startm', function (req, res) {
     let pay = req.body.pay
     let name = req.body.name
-    
+
     async function funfs(nickname, age) {
         fs.writeFile(`/home/hosting_users/solverduo/apps/solverduo_solverduo/macrofolder/${name}.js`, `let getjs = require('../script/getRSI')
         const request = require('request')
@@ -312,18 +312,20 @@ app.post('/startm', function (req, res) {
         `, 'utf-8', function (error) {
             console.log("success")
         });
-        try{
+        try {
             let req = await fetchAge(name)
-        } catch(err){
+
+
+            setapi(pay)
+            console.log("3")
+            getjs = require(`/home/hosting_users/solverduo/apps/solverduo_solverduo/macrofolder/${name}`)
+            console.log("후 : " + getjs)
+            getjs.func123(pay, name)
+            console.log("후후 : " + getjs)
+        }
+        catch (err) {
             console.log(err)
         }
-        
-        setapi(pay)
-        console.log("3")
-        getjs = require(`/home/hosting_users/solverduo/apps/solverduo_solverduo/macrofolder/${name}`)
-        console.log("후 : " + getjs)
-        getjs.func123(pay, name)
-        console.log("후후 : " + getjs)
     }
     funfs(name, pay)
     function setTimeoutPromise(ms) {
