@@ -325,7 +325,9 @@ app.post('/startm', function (req, res) {
         })
         
         setapi(pay)
+        console.log("후 : " + getjs)
         getjs.func123(pay, name)
+        console.log("후후 : " + getjs)
     }
     funfs(name, pay)
     function setTimeoutPromise(ms) {
@@ -337,10 +339,10 @@ app.post('/startm', function (req, res) {
         await setTimeoutPromise(3000);
         console.log("aaaaa")
         getjs = require(`/home/hosting_users/solverduo/apps/solverduo_solverduo/macrofolder/${name}`)
+        console.log("전 : " + getjs)
     }
     res.redirect('Rsi')
 })
-
 var testFolder = '/home/hosting_users/solverduo/apps/solverduo_solverduo/macrofolder'; // 불러올 폴더의 위치(..은 이전 폴더, .은 현재 폴더)
 fs.readdir(testFolder, function (err, filelist) {  // 배열 형태로 출력
     console.log(filelist);
