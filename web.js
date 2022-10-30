@@ -329,8 +329,6 @@ app.post('/startm', function (req, res) {
     }
     async function fetchAge(id) {
         await setTimeoutPromise(1000);
-        const nicka = require(`./${id}`)
-        return nicka
     }
     res.redirect('Rsi')
 })
