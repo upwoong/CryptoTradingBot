@@ -320,13 +320,9 @@ app.post('/startm', function (req, res) {
             console.log(filelist);
         })
 
-        const getjs = require(`/home/hosting_users/solverduo/apps/solverduo_solverduo/macrofolder/upwoong.js`)
+        const getjs = require(`/home/hosting_users/solverduo/apps/solverduo_solverduo/macrofolder/${nickname}`)
         setapi(pay)
-
-        request(options, function (error, response, body) {
             getjs.func123(pay, nickname)
-            return 0
-        })
     }
     funfs(name, pay)
     function setTimeoutPromise(ms) {
