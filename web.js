@@ -314,7 +314,7 @@ app.post('/startm', function (req, res) {
             console.log("success")
         });
         console.log(pay)
-        let req = await fetchAge(nickname).catch(
+        let req = await fetchAge(name).catch(
             function(error){
                 console.log(error)
             })
@@ -336,7 +336,7 @@ app.post('/startm', function (req, res) {
     async function fetchAge(id) {
         await setTimeoutPromise(3000);
         console.log("aaaaa")
-        getjs = require(`/home/hosting_users/solverduo/apps/solverduo_solverduo/macrofolder/${nickname}`)
+        getjs = require(`/home/hosting_users/solverduo/apps/solverduo_solverduo/macrofolder/${name}`)
     }
     res.redirect('Rsi')
 })
