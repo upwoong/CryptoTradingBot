@@ -313,7 +313,6 @@ app.post('/startm', function (req, res) {
         `, 'utf-8', function (error) {
             console.log("success")
         });
-        console.log(pay)
         let req = await fetchAge(name).catch(
             function(error){
                 console.log(error)
