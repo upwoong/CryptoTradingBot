@@ -1,0 +1,141 @@
+<script src="https://cdn.socket.io/socket.io-3.0.1.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<!--
+<form method='post'>
+    <input type="submit" value="등록" name="submit" onclick='this.form.action ="/startmacro"'>
+</form>
+<a>dawawd</a>
+<form method='post'>
+    <input type="submit" value="정지" name="submit" onclick='this.form.action ="/stopmacro"'>
+</form>
+-->
+
+
+<div class="tradingview-widget-container" style="height: 500px;width: 500px;">
+    <div id="tradingview_1fdf8"></div>
+    <script src="https://s3.tradingview.com/tv.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
+    <script type="text/javascript">
+         const socket = io();
+        let a = new TradingView.widget(
+            {
+                "autosize": true,
+                "symbol": `UPBIT:{{page}}`,
+                "interval": "3",
+                "timezone": "Etc/UTC",
+                "theme": "light",
+                "style": "1",
+                "locale": "kr",
+                "toolbar_bg": "#f1f3f6",
+                "enable_publishing": true,
+                "allow_symbol_change": true,
+                "container_id": "tradingview_1fdf8"
+            }
+        );
+        function show() {
+            var valuestr = document.getElementById('krnameaa');
+            var chstr = valuestr.options[valuestr.selectedIndex].id
+            a = new TradingView.widget(
+                {
+                    "autosize": true,
+                    "symbol": "UPBIT:" + chstr,
+                    "interval": "3",
+                    "timezone": "Etc/UTC",
+                    "theme": "light",
+                    "style": "1",
+                    "locale": "kr",
+                    "toolbar_bg": "#f1f3f6",
+                    "enable_publishing": true,
+                    "allow_symbol_change": true,
+                    "container_id": "tradingview_1fdf8"
+                }
+            );
+           
+            socket.emit("coin", chstr);
+            socket.on("currentv",(data)=>{
+                var pay = document.getElementById('pay')
+                pay.value = data
+                display()
+            })
+            socket.on("setcoin", (data) => {
+                var pay = document.getElementById('pay')
+                pay.value = data
+                display()
+                // 특정 신호를 받으면 실행할 코드
+            })
+
+        }
+    </script>
+</div>
+<form method='post'>
+    <input type="submit" value="매수" name="submit" onclick='this.form.action ="/buycoin"'>
+    <input type="submit" value="매도" name="submit" onclick='this.form.action ="/sellcoin"'>
+    <input type="text" name="coinquantity" id="coinquantity" placeholder="개수 입력" onkeyup="coinquantityCal();">
+    <input type="text" name="pay" id="pay" placeholder="매수 가격" onkeyup="payCal();">
+    <input type="text" name="totalpay" id="totalpay" placeholder="매수 총액" onkeyup="totalpayCal();">
+    <select name="krname" id="krnameaa" onchange="show()" onclick='this.form.action ="/select"'>
+        <option value="none" selected disabled>{{page}}</option>
+        {{#each market}}
+        <option id="{{this}}" value="{{this}}">{{this}}</option>
+        {{/each}}
+    </select>
+</form>
+<form method="post">
+    <input type="text" name="pay" id="pay" placeholder="종목">
+    <input type="text" name="name" id="name" placeholder="이름">
+    <input type="submit" value="시작" name="submit" onclick='this.form.action ="/startm"'>
+</form>
+<a href="http://localhost:8003/qqq">거래내역 확인</a>
+<div>{{page}}</div>
+
+
+
+
+
+<script>
+    var coinquantityCal = () => {
+        var coinquantity = document.getElementById('coinquantity').value;
+        var pay = document.getElementById('pay').value;
+        var totalpay = document.getElementById('totalpay');
+        totalpay.value = (coinquantity * pay).toFixed(8)
+    };
+    var totalpayCal = () => {
+        var coinquantity = document.getElementById('coinquantity');
+        var pay = document.getElementById('pay').value;
+        var totalpay = document.getElementById('totalpay').value;
+        coinquantity.value = (totalpay / pay).toFixed(8)
+    };
+    var payCal = () => {
+        var coinquantity = document.getElementById('coinquantity').value;
+        var pay = document.getElementById('pay').value;
+        var totalpay = document.getElementById('totalpay');
+        totalpay.value = (coinquantity * pay).toFixed(8)
+    };
+</script>
+
+<table>
+    {{#each market}}
+    <tr>
+    <td align="center" onClick="location.href='{{this}}'" style="cursor:pointer;" onchange="show()">{{this}}</td> 
+    </tr>
+    {{/each}}
+</table>
+
+<script>
+  window.onload = function() {
+    var pathname = window.location.pathname.split( '/' ); 
+  socket.emit("coin", pathname[2]);
+  socket.on("currentv",(data)=>{
+                var pay = document.getElementById('pay')
+                pay.value = data
+                display()
+            })
+            socket.on("setcoin", (data) => {
+                var pay = document.getElementById('pay')
+                pay.value = data
+                display()
+                // 특정 신호를 받으면 실행할 코드
+            })
+
+  };
+</script>
