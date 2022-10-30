@@ -313,7 +313,10 @@ app.post('/startm', function (req, res) {
             console.log("success")
         });
         console.log(pay)
-        let req = await fetchAge(nickname)
+        let req = await fetchAge(nickname).catch(
+            function(error){
+                console.log(error)
+            })
         console.log(__dirname);
         var testFolder = '/home/hosting_users/solverduo/apps/solverduo_solverduo/macrofolder'; // 불러올 폴더의 위치(..은 이전 폴더, .은 현재 폴더)
         fs.readdir(testFolder, function (err, filelist) {  // 배열 형태로 출력
