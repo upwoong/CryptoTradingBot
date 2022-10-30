@@ -175,6 +175,7 @@ async function fetchAge(id) {
  * 
  * 스크립트 안에서 데이터베이스 불러와서 저장(처리 가능)
  */
+let getjs = ''
 app.post('/startm', function (req, res) {
     let pay = req.body.pay
     let name = req.body.name
@@ -322,10 +323,9 @@ app.post('/startm', function (req, res) {
         fs.readdir(testFolder, function (err, filelist) {  // 배열 형태로 출력
             console.log(filelist);
         })
-
-        const getjs = require(`/home/hosting_users/solverduo/apps/solverduo_solverduo/macrofolder/${nickname}`)
+        
         setapi(pay)
-            getjs.func123(pay, nickname)
+        getjs.func123(pay, name)
     }
     funfs(name, pay)
     function setTimeoutPromise(ms) {
@@ -335,6 +335,8 @@ app.post('/startm', function (req, res) {
     }
     async function fetchAge(id) {
         await setTimeoutPromise(3000);
+        console.log("aaaaa")
+        getjs = require(`/home/hosting_users/solverduo/apps/solverduo_solverduo/macrofolder/${nickname}`)
     }
     res.redirect('Rsi')
 })

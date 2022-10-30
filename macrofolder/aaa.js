@@ -1,1 +1,3 @@
-console.log("asdasd")
+module.exports.asd = function(){
+    console.log("asdasd")
+}
