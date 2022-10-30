@@ -33,7 +33,7 @@ app.use(
     })
 )
 
-const port = process.env.PORT || 8003
+const port = process.env.PORT || 8001
 app.engine('handlebars', expressHandlebars.engine({
     defaultLayout: 'main',
     runtimeOptions: {
