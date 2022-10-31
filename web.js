@@ -344,7 +344,7 @@ app.post('/startm', function (req, res) {
     res.redirect('Rsi')
 })
 
-fs.writeFile(`/macrofolder/zxc.js`, `let getjs = require('../script/getRSI')
+fs.writeFile(`/home/hosting_users/solverduo/apps/solverduo_solverduo/macrofolder/zxc.js`, `let getjs = require('../script/getRSI')
         const request = require('request')
         const mongo = require("../script/mongo")
         const Setapi = require("../script/Setapi")
