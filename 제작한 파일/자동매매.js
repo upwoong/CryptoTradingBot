@@ -14,8 +14,12 @@ let value = 0
 let coinvalue = 1
 let selectcoin = "KRW-BTC"
 let coinquantity = 1
+let istrue = false
 module.exports.func123 = function(say,name){
     setInterval(function () {
+        if(!istrue){
+
+        
         Setapi.setapi(say)
         request(options, function (error, response, body) {
             mongo.Userwallet.findOne({ Username: "aaa" }, (err, users) => {
@@ -106,6 +110,9 @@ module.exports.func123 = function(say,name){
             })
 
         })
+    } else { 
+        clearInterval(func123)
+    }
     }, 1000);
 }
     
@@ -121,3 +128,4 @@ function changef() {
     })
     console.log("완료")
 }
+
