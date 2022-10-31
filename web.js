@@ -355,6 +355,9 @@ app.post('/stopm', function (req, res) {
         console.log(filelist);
     })
     getjs = require(`/home/hosting_users/solverduo/apps/solverduo_solverduo/macrofolder/upwoong.js`)
+    console.log(getjs)
+    console.log(getjs.func123)
+    console.log("adw"  +getjs.func123)
     getjs.func123("KRW-BTC", "upwoong")
     res.redirect('Rsi')
 })
