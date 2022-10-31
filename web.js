@@ -187,6 +187,7 @@ app.post('/startm', function (req, res) {
             getjs = require(`/home/hosting_users/solverduo/apps/solverduo_solverduo/macrofolder/${name}`)
             console.log("후 : " + getjs.func123) //이것도 안되는지 확인 내일하셈
             getjs.func123(pay, name) //이걸 못찾는데요
+            console.log(getjs)
         }
         catch (err) {
             console.log(err)
