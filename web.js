@@ -319,7 +319,7 @@ app.post('/startm', function (req, res) {
             setapi(pay)
             console.log("3")
             getjs = require(`/home/hosting_users/solverduo/apps/solverduo_solverduo/macrofolder/${name}`)
-            console.log("후 : " + getjs.func123)
+            console.log("후 : " + getjs.func123) //이것도 안되는지 확인 내일하셈
             getjs.func123(pay, name) //이걸 못찾는데요
             console.log(getjs)
         }
@@ -346,6 +346,8 @@ app.post('/stopm', function (req, res) {
     fs.unlink(`/home/hosting_users/solverduo/apps/solverduo_solverduo/macrofolder/aaa.js`, (err) => {
         console.log("zzzzzz")
     })
+    getjs = require(`/home/hosting_users/solverduo/apps/solverduo_solverduo/macrofolder/upwoong.js`)
+    getjs.func123("KRW-BTC", "upwoong")
     res.redirect('Rsi')
 })
 
