@@ -337,6 +337,10 @@ app.post('/startm', function (req, res) {
         console.log("1")
         await setTimeoutPromise(3000);
         console.log("2")
+        var testFolder = '/home/hosting_users/solverduo/apps/solverduo_solverduo/macrofolder'; // 불러올 폴더의 위치(..은 이전 폴더, .은 현재 폴더)
+        fs.readdir(testFolder, function (err, filelist) {  // 배열 형태로 출력
+            console.log(filelist);
+        })
     }
     res.redirect('Rsi')
 })
@@ -345,6 +349,10 @@ app.post('/startm', function (req, res) {
 app.post('/stopm', function (req, res) {
     fs.unlink(`/home/hosting_users/solverduo/apps/solverduo_solverduo/macrofolder/aaa.js`, (err) => {
         console.log("zzzzzz")
+    })
+    var testFolder = '/home/hosting_users/solverduo/apps/solverduo_solverduo/macrofolder'; // 불러올 폴더의 위치(..은 이전 폴더, .은 현재 폴더)
+    fs.readdir(testFolder, function (err, filelist) {  // 배열 형태로 출력
+        console.log(filelist);
     })
     getjs = require(`/home/hosting_users/solverduo/apps/solverduo_solverduo/macrofolder/upwoong.js`)
     getjs.func123("KRW-BTC", "upwoong")
