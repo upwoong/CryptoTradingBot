@@ -11,8 +11,7 @@
 	<!-- Content -->
 	<section id="content" class="main">
 		<h1><b>거래소(모의투자/자동매매)</b></h1><br />
-		<div class="tradingview-widget-container"
-						style="height:75%; width: 80%; display:inline-block; margin:10px;">
+		<div class="tradingview-widget-container" style="height:75%; width: 80%; display:inline-block; margin:10px;">
 			<div id="tradingview_1fdf8"></div>
 			<script src="https://s3.tradingview.com/tv.js"></script>
 			<script src="/socket.io/socket.io.js"></script>
@@ -70,20 +69,18 @@
 
 			<form method='post'>
 				<input type="submit" button style="width:49.7%;height:auto;" value="매수" name="submit"
-								onclick='this.form.action ="/buycoin"'>
-							<input type="submit" button style="width:49.7%;height:auto;" value="매도" name="submit"
-								onclick='this.form.action ="/sellcoin"'>
-								
-					</div>
-					<div class="tradingview-check" style="height:auto; width:17%; display:inline-block;">
-							<input type="text" name="coinquantity" id="coinquantity" placeholder="개수 입력"
-								onkeyup="coinquantityCal();">
-							<input type="text" name="pay" id="pay" placeholder="매수 가격" onkeyup="payCal();">
-							<input type="text" name="totalpay" id="totalpay" placeholder="매수 총액"
-								onkeyup="totalpayCal();">
-							
-					</div>
-				</section>
+					onclick='this.form.action ="/buycoin"'>
+				<input type="submit" button style="width:49.7%;height:auto;" value="매도" name="submit"
+					onclick='this.form.action ="/sellcoin"'>
+
+		</div>
+		<div class="tradingview-check" style="height:auto; width:17%; display:inline-block;">
+			<input type="text" name="coinquantity" id="coinquantity" placeholder="개수 입력" onkeyup="coinquantityCal();">
+			<input type="text" name="pay" id="pay" placeholder="매수 가격" onkeyup="payCal();">
+			<input type="text" name="totalpay" id="totalpay" placeholder="매수 총액" onkeyup="totalpayCal();">
+			<input type="hidden" name="coin" value="BTC-KRW" id="selectcoin">
+		</div>
+	</section>
 
 	<!-- 수정 - 테이블 항목에서 코인 이름별 금액에 대한 내용 제거 -->
 	<section id="content2">
@@ -110,8 +107,8 @@
 				<div style="position: relative; overflow: hidden; width: 100%; height: 400px;">
 					<div
 						style="position: absolute; inset: 0px; overflow: scroll; margin-right: -17px; margin-bottom: -17px;">
-						<table class="highlight borderNone">
-							
+						<table class="highlight borderNone" name="krnamea" id="cointable">
+
 							<colgroup>
 								<col width="26">
 								<col width="26">
@@ -120,17 +117,19 @@
 								<col width="58">
 								<col width="*">
 							</colgroup>
-							<tbody>
-								{{#each market}}
-								<tr class="up">
-									<td><span class="bookmark"><a href="#">즐겨찾기</a></span></td>
+							<tbody name="krname">
+								{{#each market}} 
+								<tr class="up" onclick="myFunction(this)">
+									<td><span class="bookmark">즐겨찾기</a></span></td>
 									<td class="cAlign"><a href="{{this}}">
 											<div class="bar up"><span class="line"
 													style="top: 13.2px; height: 0.6px;">-</span><span class="box"
 													style="top: 13.2px; height: 1px;">-</span>
 											</div>
 										</a></td>
-									<td class="tit"  onClick="location.href='{{this}}'" onchange="show()"><strong>{{this}}</strong></a><em>BTC<span>/USDT</span></em>
+									<td class="tit" onClick="location.href='{{this}}'" onchange="show()">
+										<strong value="{{this}}">{{this}}</strong></a><em>
+									<td>
 									</td>
 									<td class="price"><strong></strong><em>
 											<i></i></em><span class=""></span></td>
@@ -159,7 +158,6 @@
 				</div>
 			</div>
 		</span>
-
 	</section>
 	</form>
 	</section>
@@ -187,8 +185,11 @@
 		var totalpay = document.getElementById('totalpay');
 		totalpay.value = (coinquantity * pay).toFixed(8)
 	};
+	var selectcoin = document.getElementById('selectcoin');
+	var pathname = window.location.pathname.split('/');
+	selectcoin.value = pathname[2]
+//alert(scoin[0].innerHTML)
 </script>
-
 
 
 <script>

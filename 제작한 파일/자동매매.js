@@ -22,14 +22,14 @@ module.exports.func123 = function(say,name){
         
         Setapi.setapi(say)
         request(options, function (error, response, body) {
-            mongo.Userwallet.findOne({ Username: "aaa" }, (err, users) => {
-                mongo.Usertransaction.findOne({ Username: "aaa" }, (err, acc) => {
+            mongo.Userwallet.findOne({ Username: name }, (err, users) => {
+                mongo.Usertransaction.findOne({ Username: name }, (err, acc) => {
                     console.log(getjs.getRSI(body).RSI)
                     if (getjs.getRSI(body).RSI < 35) {
                         console.log(getjs.getRSI(body).RSI)
                         if (users.cooltime == "true") {
                             users.cooltime = "false"
-                            setTimeout(() => changef(), 10000);
+                            setTimeout(() => changef(name), 10000);
                             if (users.Money > coinvalue * coinquantity) {
                                 for (let i = 0; i < users.Holdcoin.length; i++) {
                                     if (users.Holdcoin[i].coinname == selectcoin) {//구매한 코인이 지갑에 있다면
@@ -71,7 +71,7 @@ module.exports.func123 = function(say,name){
                     } else if (getjs.getRSI(body).RSI > 65) {
                         if (users.buycooltime == "true") {
                             users.buycooltime = "false"
-                            setTimeout(() => changef(), 10000);
+                            setTimeout(() => changef(name), 10000);
                             users.Money += coinquantity
                             for (let i = 0; i < users.Holdcoin.length; i++) {
                                 if (users.Holdcoin[i].coinname == selectcoin) {
@@ -116,8 +116,8 @@ module.exports.func123 = function(say,name){
     }, 1000);
 }
     
-function changef() {
-    mongo.Userwallet.findOne({ Username: "aaa" }, (err, users) => {
+function changef(name) {
+    mongo.Userwallet.findOne({ Username: name }, (err, users) => {
         users.buycooltime = "true"
         users.save(function (err) {
             if (err) {
