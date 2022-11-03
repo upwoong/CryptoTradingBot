@@ -4,10 +4,11 @@
 	<!-- Content -->
 	<section id="content" class="main">
 		<form method="post">
-			<input type="text" name="pay" id="pay" placeholder="종목">
-			<input type="text" name="name" id="name" placeholder="이름">
+			종목 : <input type="text" name="pay" id="pay" placeholder="종목">
+			매수 지점 : <input type="text" name="name" id="name" placeholder="매수 지점">
+			매도 지점 : <input type="text" name="name" id="name" placeholder="매도 지점">
 			<input type="submit" value="시작" name="submit" onclick='this.form.action ="/startm"'>
-			<input type="submit" value="시작" name="submit" onclick='this.form.action ="/stopm"'>
+			<input type="submit" value="종료" name="submit" onclick='this.form.action ="/stopm"'>
 		</form>
 		<h1><b>RSI 상대강도지수</b></h1><br />
 		<span class="image main"><img src="img/rsi.png" alt="" /></span>

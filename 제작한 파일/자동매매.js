@@ -18,8 +18,6 @@ let istrue = false
 module.exports.func123 = function(say,name){
     setInterval(function () {
         if(!istrue){
-
-        
         Setapi.setapi(say)
         request(options, function (error, response, body) {
             mongo.Userwallet.findOne({ Username: name }, (err, users) => {
@@ -65,7 +63,6 @@ module.exports.func123 = function(say,name){
                                 })
 
                             }
-
                             console.log("매수 완료")
                         }
                     } else if (getjs.getRSI(body).RSI > 65) {

@@ -39,7 +39,7 @@ const usertransaction = new mongoose.Schema({
         kind: String,
         coinname: String,
         coinquantity: Number,
-        coinbuyprice: Number,
+        coinbuyprice: String,
     }]
 })
 

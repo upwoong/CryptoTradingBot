@@ -163,9 +163,6 @@ async function fetchAge(id) {
 */
 
 
-
-
-console.log("aaaaaaaaaaaaaaa")
 /**
  * 1. web.js에서 코인값 받기
  * 
@@ -177,7 +174,6 @@ let getjs = ''
 app.post('/startm', function (req, res) {
     let pay = req.body.pay
     let name = req.body.name
-
     async function funfs(nickname, age) {
         console.log("실행중")
         try {
@@ -185,9 +181,7 @@ app.post('/startm', function (req, res) {
             setapi(pay)
             console.log("3")
             getjs = require(`/home/hosting_users/solverduo/apps/solverduo_solverduo/macrofolder/${name}`)
-            getjs.func123(pay, name) //이걸 못찾는데요
-            console.log("..........")
-            console.log(getjs)
+            getjs.func123(pay, name)
         }
         catch (err) {
             console.log(err)
@@ -206,13 +200,6 @@ app.post('/startm', function (req, res) {
         const Setapi = require("../script/Setapi")
         module.exports.boolean = false
         
-        /**
-         * 해야할거 : 
-         * 매수 및 매도할때 얼만큼 매수,매도 할건지
-         * 자동 매수할때 돈이 없으면 어떻게 반환처리 할 것인지.
-         * 매도할때 일정개수 이하면 전량매도 함수 구현
-         * 
-         */
         let coinvalue = 1
         let selectcoin = "KRW-BTC"
         let coinquantity = 1
@@ -333,9 +320,7 @@ app.post('/startm', function (req, res) {
         `, 'utf-8', function (error) {
             console.log("success")
         });
-        console.log("1")
         await setTimeoutPromise(6000);
-        console.log("2")
     }
     res.redirect('Rsi')
 })
@@ -649,6 +634,7 @@ app.post('/buycoin', function (req, res) {
         res.send(`<script>alert('빈 공간이 있습니다.');location.href='MockInvestment/${req.body.coin}';</script>`);
         return
     }
+    //awdawdaw
     selectcoin = selectcoin.replace("KRW", "-KRW").split('-').reverse().join('-')
     setapi(selectcoin)
     let state = true
@@ -656,7 +642,7 @@ app.post('/buycoin', function (req, res) {
         alloption = body
         let coinvalue = alloption.toString().split(',')[6].split(':')[1] //현재 시세 받아오는 곳
         mongo.Userwallet.findOne({ Username: req.session.logindata.id }, (err, users) => { //매수 후에 가격 계산
-            mongo.Usertransaction.findOne({ Useranme: req.session.logindata.id }, (err, nick) => {
+            mongo.Usertransaction.findOne({ Username: req.session.logindata.id }, (err, nick) => {
                 if (users != null || nick != null) {
                     if (users.Money > coinvalue * coinquantity) {
                         for (let i = 0; i < users.Holdcoin.length; i++) {
@@ -685,6 +671,8 @@ app.post('/buycoin', function (req, res) {
                         }
                         let objtra = new pushtransaction("매수", selectcoin, coinquantity, coinvalue)
                         nick.transaction.push(objtra)
+                        console.log(nick)
+                        console.log(users)
                         users.Money -= coinvalue * coinquantity
                         users.save(function (err) {
                             if (err) {
@@ -722,6 +710,7 @@ function resolveAfter2Seconds() {
         }, 2000);
     });
 }
+//판매시 금액시 수량을 더하는 코드 수정해야함
 app.post('/sellcoin', function (req, res) {
     let selectcoin = req.body.coin
     const coinquantity = Number(req.body.coinquantity)
@@ -754,7 +743,7 @@ app.post('/sellcoin', function (req, res) {
                             }
                         }
                     }
-                    let objtra = new pushtransaction(req.session.logindata.id, "매도", selectcoin, coinquantity, coinvalue)
+                    let objtra = new pushtransaction("매도", selectcoin, coinquantity, coinvalue)
                     nick.transaction.push(objtra)
                     users.save(function (err) {
                         if (err) {
