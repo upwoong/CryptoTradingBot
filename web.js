@@ -170,6 +170,7 @@ async function fetchAge(id) {
  * 
  * 스크립트 안에서 데이터베이스 불러와서 저장(처리 가능)
  */
+
 let getjs = ''
 app.post('/startm', function (req, res) {
     let pay = req.body.pay
@@ -635,6 +636,9 @@ app.post('/buycoin', function (req, res) {
         return
     }
     //awdawdaw
+    setInterval(() => {
+        
+    }, 10000);
     selectcoin = selectcoin.replace("KRW", "-KRW").split('-').reverse().join('-')
     setapi(selectcoin)
     let state = true
@@ -686,7 +690,9 @@ app.post('/buycoin', function (req, res) {
                                 return;
                             }
                         })
-
+                        console.log(users)
+                        console.log("----")
+                        console.log(nick)
                         res.send(`<script>alert('완료');location.href='MockInvestment/${req.body.coin}';</script>`);
                     }
                     else {
@@ -724,7 +730,7 @@ app.post('/sellcoin', function (req, res) {
         alloption = body
         let coinvalue = alloption.toString().split(',')[6].split(':')[1] //현재 시세 받아오는 곳
         mongo.Userwallet.findOne({ Username: req.session.logindata.id }, (err, users) => { //매수 후에 가격 계산
-            mongo.Usertransaction.findOne({ Useranme: req.session.logindata.id }, (err, nick) => {
+            mongo.Usertransaction.findOne({ Username: req.session.logindata.id }, (err, nick) => {
                 if (users != null) {
                     users.Money += coinquantity
                     for (let i = 0; i < users.Holdcoin.length; i++) {
@@ -757,6 +763,9 @@ app.post('/sellcoin', function (req, res) {
                             return;
                         }
                     })
+                    console.log(users)
+                        console.log("----")
+                        console.log(nick)
                     res.send(`<script>alert('완료');location.href='MockInvestment/${req.body.coin}';</script>`);
                 }
                 else {

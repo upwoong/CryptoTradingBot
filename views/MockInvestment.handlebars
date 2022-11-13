@@ -81,6 +81,13 @@
 			<input type="hidden" name="coin" value="BTC-KRW" id="selectcoin">
 		</div>
 	</section>
+	<form method="post">
+			종목 : <input type="text" name="pay" id="pay" placeholder="종목">
+			매수 지점 : <input type="text" name="name" id="name" placeholder="매수 지점">
+			매도 지점 : <input type="text" name="name" id="name" placeholder="매도 지점">
+			<input type="submit" value="시작" name="submit" onclick='this.form.action ="/startm"'>
+			<input type="submit" value="종료" name="submit" onclick='this.form.action ="/stopm"'>
+		</form>
 
 	<!-- 수정 - 테이블 항목에서 코인 이름별 금액에 대한 내용 제거 -->
 	<section id="content2">
