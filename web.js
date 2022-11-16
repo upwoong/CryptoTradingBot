@@ -457,8 +457,8 @@ fs.writeFile(`/home/hosting_users/solverduo/apps/solverduo_solverduo/macrofolder
         
         
         `, 'utf-8', function (error) {
-            console.log("success")
-        });
+    console.log("success")
+});
 
 
 
@@ -569,12 +569,13 @@ function getcurrentRSI(body) { //RSI구하는 함수
  */
 
 class pushtransaction {
-    constructor(kind, coinname, coinquantity, coinbuyprice) {
+    constructor(kind, coinname, coinquantity, coinbuyprice,pricereturn) {
         this.Date = new Date();
         this.kind = kind;
         this.coinname = coinname;
         this.coinquantity = coinquantity;
         this.coinbuyprice = coinbuyprice;
+        this.pricereturn = pricereturn
     }
 }
 
@@ -636,9 +637,6 @@ app.post('/buycoin', function (req, res) {
         return
     }
     //awdawdaw
-    setInterval(() => {
-        
-    }, 10000);
     selectcoin = selectcoin.replace("KRW", "-KRW").split('-').reverse().join('-')
     setapi(selectcoin)
     let state = true
@@ -664,7 +662,6 @@ app.post('/buycoin', function (req, res) {
                                 users.Holdcoin[i].coinquantity += coinquantity //수정해야함
                                 state = false
                             }
-
                         }
                         if (state) {
                             let object = new Object
@@ -690,9 +687,6 @@ app.post('/buycoin', function (req, res) {
                                 return;
                             }
                         })
-                        console.log(users)
-                        console.log("----")
-                        console.log(nick)
                         res.send(`<script>alert('완료');location.href='MockInvestment/${req.body.coin}';</script>`);
                     }
                     else {
@@ -717,6 +711,7 @@ function resolveAfter2Seconds() {
     });
 }
 //판매시 금액시 수량을 더하는 코드 수정해야함
+//수익률 : (현재 코인가격 * 수량) - 현재 평균가
 app.post('/sellcoin', function (req, res) {
     let selectcoin = req.body.coin
     const coinquantity = Number(req.body.coinquantity)
@@ -736,6 +731,7 @@ app.post('/sellcoin', function (req, res) {
                     for (let i = 0; i < users.Holdcoin.length; i++) {
                         if (users.Holdcoin[i].coinname == selectcoin) {
                             if (users.Holdcoin[i].coinquantity >= coinquantity) {
+                                let pricereturn = coinvalue - users.Holdcoin[i].coinbuyprice
                                 users.Holdcoin[i].coinbuyprice =
                                     (users.Holdcoin[i].coinquantity * users.Holdcoin[i].coinbuyprice
                                         + coinvalue * (coinquantity * -1)) / (users.Holdcoin[i].coinquantity + (coinquantity * -1))
@@ -743,14 +739,14 @@ app.post('/sellcoin', function (req, res) {
                                 if (users.Holdcoin[i].coinquantity <= 0) {
                                     users.Holdcoin.splice(i, 1)
                                 }
+                                let objtra = new mongo.pushtransaction("매도", selectcoin, coinquantity, coinvalue, pricereturn)
+                                nick.transaction.push(objtra)
                             }
                             else {
                                 res.send(`<script>alert('개수가 너무 많습니다.');location.href='MockInvestment/${req.body.coin}';</script>`);
                             }
                         }
                     }
-                    let objtra = new pushtransaction("매도", selectcoin, coinquantity, coinvalue)
-                    nick.transaction.push(objtra)
                     users.save(function (err) {
                         if (err) {
                             console.error(err);
@@ -763,9 +759,6 @@ app.post('/sellcoin', function (req, res) {
                             return;
                         }
                     })
-                    console.log(users)
-                        console.log("----")
-                        console.log(nick)
                     res.send(`<script>alert('완료');location.href='MockInvestment/${req.body.coin}';</script>`);
                 }
                 else {
@@ -834,8 +827,8 @@ app.get('/Introduce', function (req, res) { //소개글
     res.render('Introduce')
 })
 
-app.get('/Ethereum',function(req,res){
-    res.render('Ethereum',{layout:null})
+app.get('/Ethereum', function (req, res) {
+    res.render('Ethereum', { layout: null })
 })
 
 app.get('/mainpage', function (req, res) { //메인페이지
@@ -851,7 +844,7 @@ app.get('/MockInvestment/:coin', function (req, res) { //모의투자
     else {
         res.redirect('../SignIn')
     }
-    
+
 })
 app.get('/ServiceCenter', function (req, res) { //고객센터 (필x)
     res.render('ServiceCenter')
@@ -872,17 +865,17 @@ app.get('/News', function (req, res) { //뉴스
     else {
         res.redirect('SignIn')
     }
-    
+
 })
 app.get('/InvestmentDetails', function (req, res) {
     if (req.session.logindata) { //투자내역
-    mongo.Usertransaction.findOne({ Username: req.session.logindata.id }, (err, users) => {
-        res.render('InvestmentDetails', { transaction: users.transaction})
-    })
-}
-else {
-    res.redirect('SignIn')
-}
+        mongo.Usertransaction.findOne({ Username: req.session.logindata.id }, (err, users) => {
+            res.render('InvestmentDetails', { transaction: users.transaction })
+        })
+    }
+    else {
+        res.redirect('SignIn')
+    }
 
 })
 
