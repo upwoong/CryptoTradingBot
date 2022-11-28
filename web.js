@@ -105,38 +105,11 @@ function setapi(valuea) {
 
 let alloption = "" // 코인의 모든 정보
 let value = "" //현재 가격
-let mybuyaver = 40000000 //평균매수가격
-let mypl = 0 //현재 손익
-let myQuantity = 3 //현재 코인수량
-function intervalFunc() {
-    request(options, function (error, response, body) {
-        if (error) throw new Error(error);
-        alloption = body
-        value = alloption.toString().split(',')[6].split(':')[1] //현재 시세 받아오는 곳
-        mypl = (value - mybuyaver) * myQuantity //현재 손익 계산
-        console.log(value)
-        io.emit('currentv', value)
-        return value
-    });
-}
-/*
-자동매매함수 만드는 방안1
-1. 자동매매 버튼 실행시 자동매매 코드가 들어있는 함수를 파일로 만듬 ex) 닉네임123사용자가 버튼 클릭시 function123.js 파일 생성
-2. setinterval(function123)을 계속 실행
-3. 종료하고 싶을 때, 파일 삭제
-*/
-//setInterval(asd1("Adw"),1000)
-//setInterval(function() { fun.func123("myURl") }, 1000);
-//fun.func123("hello")
-async function currentcoin() {
-    request(options, function (error, response, body) {
-        alloption = body;
-        value = alloption.toString().split(',')[6].split(':')[1]; //현재 시세 받아오는 곳
-        return value
-    })
-    console.log(value)
-    return value
-}
+const Sellscript = require("./script/Sellcoin")
+const Buyscript = require("./script/Buycoin")
+const Setapi = require("./script/Setapi")
+
+
 /*
 async function funfs(nickname,age){
     fs.writeFile(`./${nickname}.js`,"exports.func123 = function(say)\n\{   setInterval(console.log(say), 500,function(error){console.log(error)})}",'utf-8',function(error){
@@ -170,25 +143,30 @@ async function fetchAge(id) {
  * 
  * 스크립트 안에서 데이터베이스 불러와서 저장(처리 가능)
  */
-
+//로컬로 할시 교체할 주소 : require = ./macrofolder/${name}.js
+//                       : writrefile : macrofolder/${name}.js
+//호스팅 할시 교체할 주소 : /home/hosting_users/solverduo/apps/solverduo_solverduo/macrofolder/${name}.js
 let getjs = ''
 app.post('/startm', function (req, res) {
-    let pay = req.body.pay
-    let name = req.body.name
+    let kind = req.body.kind
+    let name = req.session.logindata.id  //닉네임
+    let buypoint = req.body.buypoint //매수지점
+    let sellpoint = req.body.sellpoint //매도지점
     async function funfs(nickname, age) {
         console.log("실행중")
         try {
             let req = await fetchAge(name)
-            setapi(pay)
+            setapi(kind)
             console.log("3")
-            getjs = require(`/home/hosting_users/solverduo/apps/solverduo_solverduo/macrofolder/${name}`)
-            getjs.func123(pay, name)
+            getjs = require(`/home/hosting_users/solverduo/apps/solverduo_solverduo/macrofolder/${name}.js`)
+            console.log(getjs)
+            getjs.func123(kind, name,buypoint,sellpoint)
         }
         catch (err) {
             console.log(err)
         }
     }
-    funfs(name, pay)
+    funfs(name, kind)
     function setTimeoutPromise(ms) {
         return new Promise((resolve, reject) => {
             setTimeout(() => resolve(), ms);
@@ -204,15 +182,17 @@ app.post('/startm', function (req, res) {
         let coinvalue = 1
         let selectcoin = "KRW-BTC"
         let coinquantity = 1
-        module.exports.func123 = function(say,name){
+        module.exports.func123 = function(say,name,buypoint,sellpoint){
             let startmacro = setInterval(function () {
                 if(!module.exports.boolean){ //stop and macro
                     Setapi.setapi(say)
                 request(options, function (error, response, body) {
+                    alloption = body
+                coinvalue = alloption.toString().split(',')[6].split(':')[1] //현재 시세 받아오는 곳
                     mongo.Userwallet.findOne({ Username: name }, (err, users) => {
                         mongo.Usertransaction.findOne({ Username: name }, (err, acc) => {
                             console.log(getjs.getRSI(body).RSI)
-                            if (getjs.getRSI(body).RSI < 35) {
+                            if (getjs.getRSI(body).RSI < buypoint) {
                                 console.log(getjs.getRSI(body).RSI)
                                 if (users.buycooltime == "true") {
                                     users.buycooltime = "false"
@@ -225,10 +205,10 @@ app.post('/startm', function (req, res) {
                                                         + coinquantity * coinvalue) / (users.Holdcoin[i].coinquantity + coinquantity)
                                                 console.log(users.Holdcoin[i].coinbuyprice)
                                                 users.Holdcoin[i].coinquantity += coinquantity
-                                                state = false
+                                                module.exports.boolean = false
                                             }
                                         }
-                                        if (state) {
+                                        if (module.exports.boolean) {
                                             let object = new Object
                                             object.coinname = selectcoin
                                             object.coinquantity = coinquantity
@@ -252,10 +232,12 @@ app.post('/startm', function (req, res) {
                                         })
         
                                     }
-        
+                                    console.log("종류 : " + say)
+                                console.log("매수 가격 : " + coinvalue)
+                                console.log("매수 갯수 : " + coinquantity)
                                     console.log("매수 완료")
                                 }
-                            } else if (getjs.getRSI(body).RSI > 65) {
+                            } else if (getjs.getRSI(body).RSI > sellpoint) {
                                 if (users.buycooltime == "true") {
                                     users.buycooltime = "false"
                                     setTimeout(() => changef(name), 10000);
@@ -263,6 +245,7 @@ app.post('/startm', function (req, res) {
                                     for (let i = 0; i < users.Holdcoin.length; i++) {
                                         if (users.Holdcoin[i].coinname == selectcoin) {
                                             if (users.Holdcoin[i].coinquantity >= coinquantity) {
+                                                let pricereturn = (coinvalue - users.Holdcoin[i].coinbuyprice) * coinquantity
                                                 users.Holdcoin[i].coinbuyprice =
                                                     (users.Holdcoin[i].coinquantity * users.Holdcoin[i].coinbuyprice
                                                         + coinvalue * (coinquantity * -1)) / (users.Holdcoin[i].coinquantity + (coinquantity * -1))
@@ -276,7 +259,7 @@ app.post('/startm', function (req, res) {
                                             }
                                         }
                                     }
-                                    let objtra = new mongo.pushtransaction("매도", selectcoin, coinquantity, coinvalue)
+                                    let objtra = new mongo.pushtransaction("매도", selectcoin, coinquantity, coinvalue,pricereturn)
                                     acc.transaction.push(objtra)
                                     users.save(function (err) {
                                         if (err) {
@@ -316,8 +299,6 @@ app.post('/startm', function (req, res) {
             })
             console.log("완료")
         }
-        
-        
         `, 'utf-8', function (error) {
             console.log("success")
         });
@@ -460,8 +441,6 @@ fs.writeFile(`/home/hosting_users/solverduo/apps/solverduo_solverduo/macrofolder
     console.log("success")
 });
 
-
-
 app.post('/stopm', function (req, res) {
     let name = req.body.name
     console.log("-------")
@@ -476,89 +455,6 @@ app.post('/stopm', function (req, res) {
     res.redirect('Rsi')
 })
 
-function RSIFunc() {
-    let aaaa = 0
-    request(options, function (error, response, body) {
-        if (error) throw new Error(error);
-        aaaa = getcurrentRSI(body)
-        console.log(aaaa)
-        mongo.Usermacrocooltime.find(function (err, data) {
-            if (aaaa < 60 && data[0].status == "true") { //상태가 true면 구매실행 이후 상태 false로 변환
-                mongo.Usermacrocooltime.findOneAndUpdate({}, { $set: { 'status': "false" } }, (err, data) => {
-                    if (err) console.log(err)
-                    else console.log("저장완료")
-                })
-                console.log("특정 이하")
-                buyFnc() //종목 매수
-            }
-        })
-
-    });
-}
-
-//setInterval(RSIFunc, 500); //0.5초마다 시세 받는 함수 실행
-function buyFnc() { //종목 매수 함수 + 쿨타임 넣기
-    setTimeout(cooltime, 43200000) //12시간 후에 다시 구매 가능
-}
-function cooltime() {
-    //데이터베이스에서 false 를 true로 바꾸는 문장
-}
-function getcurrentRSI(body) { //RSI구하는 함수
-    let arraybody = ""
-    let arraycp = new Array()
-    let arraydp = new Array()
-    let plusarray = new Array()
-    let minusarray = new Array()
-    let firstplusav = 0.0
-    let firstminusav = 0.0
-    let AU = new Array()
-    let AD = new Array()
-    let RS = new Array()
-    let RSI = new Array()
-    aaa = body
-    value = aaa.toString().split(',')[3].split(':')[1]
-    arraybody = aaa.toString().split('},{')
-    for (let i = 0; i < arraybody.length; i++) {
-        arraycp.push(arraybody[i].split(',')[6].split(':')[1])
-    }
-    for (let i = 1; i <= arraycp.length; i++) {
-        arraydp.push(arraycp[arraycp.length - i])
-
-    }
-    for (let i = 0; i < arraydp.length; i++) {
-        if (arraydp[i] < arraydp[i + 1]) {
-            plusarray.push((arraydp[i + 1] - arraydp[i]))
-            minusarray.push(null)
-        } else if (arraydp[i] > arraydp[i + 1]) {
-            minusarray.push(Math.abs((arraydp[i + 1] - arraydp[i])))
-            plusarray.push(null)
-        } else if (arraydp[i] == arraydp[i + 1]) {
-            plusarray.push(null)
-            minusarray.push(null)
-        }
-    }
-    for (let i = 0; i <= plusarray.length - 14; i++) {
-        firstplusav += plusarray[i]
-    }
-    for (let i = 0; i <= minusarray.length - 14; i++) {
-        firstminusav += minusarray[i]
-    }
-    AU.push(firstplusav / 14)
-    AD.push(firstminusav / 14)
-    for (let i = 15; i <= plusarray.length; i++) {
-        AU.push((AU[i - 15] * 13 + plusarray[i - 1]) / 14)
-    }
-    for (let i = 15; i <= minusarray.length; i++) {
-        AD.push((AD[i - 15] * 13 + minusarray[i - 1]) / 14)
-    }
-    for (let i = 0; i < AU.length; i++) {
-        RS.push(AU[i] / AD[i])
-    }
-    for (let i = 0; i < RS.length; i++) {
-        RSI.push(100 - 100 / (1 + RS[i]))
-    }
-    return RSI[13]
-}
 
 /**
  * 거래내역 psuh함수
@@ -579,55 +475,6 @@ class pushtransaction {
     }
 }
 
-
-
-var inputRSI = {
-    values: [515, 516, 518, 518, 516, 516, 514, 515, 517, 516, 516, 516, 515, 513, 511, 506, 506, 505, 506, 507, 507, 507],
-    period: 14
-};
-//values : 22개, 기간 14일
-var expectedResult = [
-    86.41, 86.43, 89.65, 86.50, 84.96, 80.54, 77.56, 58.06
-];//예상결과
-
-//console.log(rsi.RSI.calculate(inputRSI)) //rsi 계산
-
-app.get('/abc', function (req, res) {
-    res.render('abc', { layout: null })
-})
-
-app.get('/login', function (req, res) {
-    res.render('login')
-})
-app.get('/qwe', function (req, res) {
-    res.render('qwe', { layout: null, krname: krname, market: market })
-})
-let page
-app.get('/qwe/:page', function (req, res) {
-    page = req.params.page
-    if (page == null) { page = "BTC" }
-    console.log(page)
-
-    res.render('qwe', { layout: null, krname: krname, market: market, page: page })
-})
-app.get('/qqq', function (req, res) {
-    mongo.Usertransaction.findOne({ Username: req.session.logindata.id }, (err, users) => {
-        res.render('transaction', { layout: null, tra: users.transaction })
-    })
-})
-app.post('/select', function (req, res) {
-    console.log(req.body.id)
-})
-let macrocontrol
-app.post('/startcoin', function (req, res) {
-    let bcoin = req.body.buycoin
-    macrocontrol = setInterval(RSIFunc, 500); //0.5초마다 시세 받는 함수 실행
-})
-app.post('/stopmacro', function (req, res) {
-    clearInterval(macrocontrol)
-    res.render('qwe', { layout: null })
-    console.log("매크로정지")
-})
 
 app.post('/buycoin', function (req, res) {
     let selectcoin = req.body.coin
@@ -703,20 +550,14 @@ app.post('/buycoin', function (req, res) {
     });
 
 })
-function resolveAfter2Seconds() {
-    return new Promise(resolve => {
-        setTimeout(() => {
-            resolve('fser');
-        }, 2000);
-    });
-}
+
 //판매시 금액시 수량을 더하는 코드 수정해야함
 //수익률 : (현재 코인가격 * 수량) - 현재 평균가
 app.post('/sellcoin', function (req, res) {
     let selectcoin = req.body.coin
     const coinquantity = Number(req.body.coinquantity)
     if (!selectcoin || !coinquantity) {
-        res.send(`<script>alert('빈 공간이 있습니다.');location.href='MockInvestment/${req.body.coin}';</script>`);
+        res.send(`<script>alert('빈 공간이 있습니다.');location.href='MockInvestment/${selectcoin}';</script>`);
         return
     }
     selectcoin = selectcoin.replace("KRW", "-KRW").split('-').reverse().join('-')
@@ -731,7 +572,7 @@ app.post('/sellcoin', function (req, res) {
                     for (let i = 0; i < users.Holdcoin.length; i++) {
                         if (users.Holdcoin[i].coinname == selectcoin) {
                             if (users.Holdcoin[i].coinquantity >= coinquantity) {
-                                let pricereturn = coinvalue - users.Holdcoin[i].coinbuyprice
+                                let pricereturn = (coinvalue - users.Holdcoin[i].coinbuyprice) * coinquantity
                                 users.Holdcoin[i].coinbuyprice =
                                     (users.Holdcoin[i].coinquantity * users.Holdcoin[i].coinbuyprice
                                         + coinvalue * (coinquantity * -1)) / (users.Holdcoin[i].coinquantity + (coinquantity * -1))
@@ -766,18 +607,73 @@ app.post('/sellcoin', function (req, res) {
                 }
             })
         })
-        /*
-        mongo.Userwallet.findOneAndUpdate({ "Username": "aaa", "Holdcoin.coinname": "bit" }, { //코인지갑에 개수 저장
-            $set: {
-                "Holdcoin.$.coinquantity": 7
-            }
-        }, function (err, data) {
-            if (err) console.log(err)
-            console.log("추가완료")
-        })
-        */
     })
 })
+
+//함수의 매개변수들 최종적으로 수정해야함
+//리팩토링한코인매수
+app.post('/buycoinre', function (req, res) {
+    let selectcoin = req.body.coin
+    const coinquantity = Number(req.body.coinquantity)
+    if (!selectcoin || !coinquantity) {
+        res.send(`<script>alert('빈 공간이 있습니다.');location.href='MockInvestment/${req.body.coin}';</script>`);
+        return
+    }
+    //awdawdaw
+    selectcoin = selectcoin.replace("KRW", "-KRW").split('-').reverse().join('-')
+    let Buyvalue = Buyscript.asyncCall(selectcoin,0.1,1,0).then(function(returnvalue){
+        asyncvalue = returnvalue
+        switch(asyncvalue){
+            case 1: console.log("정상적인 완료")
+            res.send(`<script>alert('완료');location.href='MockInvestment/${req.body.coin}';</script>`);
+            break
+            case 2: console.log("개수가 많음")
+            res.send(`<script>alert('개수가 너무 많습니다.');location.href='MockInvestment/${req.body.coin}';</script>`);
+            break
+            default : console.log("회원정보 틀림")
+        }
+        console.log(asyncvalue)
+    })
+})
+
+
+
+//리팩토링 한 코인매도
+app.post('/sellcoinre',function(req,res){
+    let selectcoin = req.body.coin
+    const coinquantity = Number(req.body.coinquantity)
+    let asyncvalue = 0
+    selectcoin = selectcoin.replace("KRW", "-KRW").split('-').reverse().join('-')
+    if (!selectcoin || !coinquantity) {
+        res.send(`<script>alert('빈 공간이 있습니다.');location.href='MockInvestment/${selectcoin}';</script>`);
+        return
+    }
+    let Sellvalue = Sellscript.asyncCall("KRW-BTC",0.1,1,0).then(function(returnvalue){
+        asyncvalue = returnvalue
+        switch(asyncvalue){
+            case 1: console.log("정상적인 완료")
+            res.send(`<script>alert('완료');location.href='MockInvestment/${req.body.coin}';</script>`);
+            break
+            case 2: console.log("개수가 많음")
+            res.send(`<script>alert('개수가 너무 많습니다.');location.href='MockInvestment/${req.body.coin}';</script>`);
+            break
+            default : console.log("회원정보 틀림")
+        }
+        console.log(asyncvalue)
+    })
+    console.log("Sellvalue : " + Sellvalue)
+    console.log("asyncvalue : " + asyncvalue)
+})
+/*
+리팩토링
+let asyncvalue = 0
+let asdaaaa = Sellscript.asyncCall("KRW-BTC",0.1,1,0).then(function(returnvlaue){
+    console.log(asyncvalue = returnvlaue)
+})
+setTimeout(() => {
+    console.log(asyncvalue)
+}, 5000);
+*/
 //request 안에서 구매기능 넣어야 할듯?
 app.post('/selectkrw', function (req, res) {
     let asd = req.body.krname.replace("KRW", "-KRW").split('-').reverse().join('-')
@@ -791,26 +687,84 @@ app.post('/selectkrw', function (req, res) {
         return value
     });
 })
-
+/*
 io.on('connection', function (socket) {
+    let coin
+    let interval
     socket.on('coin', function (data) {
         if (data) {
+            coin = data
             let asd = data.replace("KRW", "-KRW").split('-').reverse().join('-')
             console.log("asd : " + asd)
             setapi(asd)
-            request(options, function (error, response, body) {
-                alloption = body
-                let value = alloption.toString().split(',')[6].split(':')[1] //현재 시세 받아오는 곳
-                console.log(value)
-                socket.emit('setcoin', value)
-                return value
-            });
-        }
-
+            interval = setInterval(()=>callback(asd), 1000);
+            socket.emit('setcoin', value)
+            }
+            socket.on('disconnect', function (zxc) {
+                clearInterval(interval)
+                console.log("종료" + data)
+                // 클라이언트의 연결이 끊어졌을 경우 실행됨
+           });
     })
-});
+    function callback(data) {
+        Setapi.currentcoin(data).then(function(coinvalue){
+            value = coinvalue.value
+        })
+        socket.emit('setcoin', value)
+        /*
+        request(options, function (error, response, body) {
+            alloption = body
+            let value = alloption.toString().split(',')[6].split(':')[1] //현재 시세 받아오는 곳
+            socket.emit('setcoin', value)      
+            return value
+        });
+        */
+ //   }
+//});
 
+/*
+내일 무조건 함
+여기서 웹소켓 안쓰고
+핸들바에서 써서 바로 불러온다음
+현재값에 있는 것을 매수 매도시 req.body로 가져온다?
+일리 있음
+*/
+/*
+const WebSocket = require('ws')
 
+let recvData = "";
+
+function tradeServerConnect(codes) {
+    let ws = new WebSocket('wss://api.upbit.com/websocket/v1');
+    ws.on('open', ()=>{
+        console.log('trade websocket is connected')
+        const str = `[{"ticket":"find"},{"type":"trade","codes":["${codes}"]}]`;
+        ws.send(str);
+    })  
+    ws.on('message', (data)=>{
+        try {
+            console.log(ws)
+            let str = data.toString('utf-8')
+            recvData = JSON.parse(str)
+            //console.log(recvData)
+        } catch (e) {
+            console.log(e)
+        }
+    })
+}
+
+async function start() {
+	tradeServerConnect('KRW-BTC')
+    function print()
+    {
+        console.log('recvData',recvData['trade_price']);
+    }
+    setInterval(print,5000);
+}
+
+start()
+
+*/
 
 app.get('/signin', function (req, res) { //로그인 창
     res.render('SignIn')
@@ -952,8 +906,53 @@ app.post('/signinb', (req, res) => {
     });
 });
 
+let optionscxz = {
+        method: 'GET',
+        url: `https://api.upbit.com/v1/candles/minutes/1?market=${value}&count=28`,
+        headers: { Accept: 'application/json' }
+    };
 
 
+/*
+const optionsasd = {
+    method: 'GET',
+    url: 'https://api.upbit.com/v1/market/all?isDetails=false',
+    headers: {accept: 'application/json'}
+  };
+  
+  request(optionsasd, function (error, response, body) {
+    if (error) throw new Error(error);
+    let cbody
+    alloption = body;
+    cbody = alloption.toString().split('},{')
+    let newArray = new Array()
+    for(let i =0;i<cbody.length/3;i++){
+        if(((cbody[i].split(":")[1].replace(/"/g,'').split(',')[0]).includes("KRW"))){
+            newArray.push((cbody[i].split(":")[1].replace(/"/g,'').split(',')[0]))
+        }
+        //console.log(cbody[i].split(":")[1].replace(/"/g,'').split(',')[0])
+    }
+    //console.log(newArray)
+    for(let i =0;i<newArray.length;i++){
+        let url = "https://api.upbit.com/v1/candles/minutes/10"
+        //let querystring = {"market":newArray[i],"count":"1"}
+        //let response = request("GET", url, params=querystring)
+        //let data = response.json()
+        optionscxz.url = `https://api.upbit.com/v1/candles/minutes/1?market=${newArray[i]}&count=1`
+        
+        request(optionscxz, function (error, response, body) {
+            alloption = body;
+            value = alloption.toString().split(',') //현재 시세 받아오는 곳
+            console.log(newArray[i])
+            console.log(value)
+            return value
+        })
+        
+        
+    }
+    
+  });
+  */
 
 app.use((req, res) => {
     res.type('text/plain')
@@ -974,17 +973,16 @@ server.listen(port, () => console.log(
     `Express started on http://localhost:${port}; ` +
     `press Ctrl-C to terminate.`)
 )
-  /*
-Userwallet.findOneAndUpdate({ Username: "aaa" }, { //코인지갑에 개수 저장  
-$addToSet: {
-Holdcoin: {
-coinname: "qqqq",
-coinquantity: 5,
-coinbuyprice: coinvalue
-}
-},
-}, function (err, data) {
-if (err) console.log(err)
-console.log("추가완료")
+
+
+
+
+/*
+다음에 해야할거
+똑같은 코드로 다른 소켓통신 하는법 찾기
+소켓 종료하는거 찾기
+현재 코인시세 받는것.
+Setapi.currentcoin("KRW-BTC").then(function(value){
+    console.log(value.value)
 })
 */
