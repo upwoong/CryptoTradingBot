@@ -1,0 +1,81 @@
+<link rel="stylesheet" href="../css/CoinWallet.css">
+<script src="https://cdn.jsdelivr.net/npm/handlebars@4.7.7/dist/handlebars.min.js"></script>
+<!-- Main -->
+<div id="main">
+	<section id="content" class="main">
+		<div class="container">
+			<div class="top">
+				<h1><b>코인 지갑</b></h1><br />
+			</div>
+			<div class="middle">
+				<div class="left">
+					<div class="left-top">
+						<h2>현재 정보</h2>
+						<div>시작 금액 : {{StartMoney}}</div>
+						<div>현재 남은 금액 : {{HoldMoney}}</div>
+						<div>총액 :</div>
+						<div class = "AddMoneyDiv">
+							<div class="AddStartMoney">
+								<form method="post" style="display: flex; align-items: center;">
+									<div class="AddStartMoney-text">금액 추가</div>
+									<div><input type="text" class="AddStartMoneyText"
+											name="Money" id="Money" placeholder="추가할 액수"></div>
+									<div class="AddStartMoney-b"><input type="submit" class="AddMoneyb" value="추가"
+											name="submit" onclick='this.form.action="/AddMoney"'></div>
+								</form>
+							</div>
+						</div>
+					</div>
+					<div class="left-bottom">
+						<h2>수익</h2>
+						<div class="profit">
+							{{StartMoney}} - {{TotalMoney}}
+						</div>
+						<div id="result">
+							0
+						</div>
+						<div id="PercentResult">
+							0
+						</div>
+						<p>수익 (가격,%)</p>
+					</div>
+				</div>
+				<div class="right">
+					<h2>코인목록</h2>
+					<table class="CoinTable">
+						<th>코인</th>
+						<th>수량</th>
+						<th>평균단가</th>
+						{{#each CoinWallet}}
+						<tr>
+							<td>
+								{{coinname}}
+							</td>
+							<td>
+								{{coinquantity}}
+							</td>
+							<td>
+								{{coinbuyprice}}
+							</td>
+						</tr>
+						{{/each}}
+					</table>
+
+				</div>
+			</div>
+		</div>
+	</section>
+</div>
+
+<script>
+	const profitEl = document.querySelector('.profit');
+	const resultEl = document.getElementById('result');
+	const PercentResult = document.getElementById('PercentResult');
+	const calculationResulta = parseInt(profitEl.textContent.trim().split(' - ')[0]) - parseInt(profitEl.textContent.trim().split(' - ')[1]);
+
+	const StartMoney = profitEl.textContent.trim().split(' - ')[0];
+	const TotalMoney = profitEl.textContent.trim().split(' - ')[1];
+	resultEl.innerHTML = (TotalMoney - StartMoney).toFixed(2);
+	PercentResult.innerHTML = ((TotalMoney / StartMoney) * 100).toFixed(2) + "%";
+
+</script>

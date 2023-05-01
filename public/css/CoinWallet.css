@@ -1,0 +1,94 @@
+
+.container {
+    display: flex;
+    flex-direction: column; /* 세로 방향으로 요소 배치 */
+    height: 100vh;
+    border: 1px solid;
+}
+
+.top,
+.middle{
+    flex: 1;
+    box-sizing: border-box;
+    border: 1px solid;
+}
+
+.left{
+    display: flex;
+    flex-direction: column;
+    height: 80vh;
+    border: 1px solid;
+}
+
+.top {
+    padding: 10px;
+    border: 1px solid;
+}
+
+.left > .left-top{
+    flex:1;
+    position: relative;
+    border: 1px solid;
+}
+
+.left > .left-top > .AddMoneyDiv {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.left > .left-bottom{
+    flex:2;
+    border: 1px solid;
+
+}
+
+.middle {
+    display: flex;
+    flex-direction: row; /* 가로 방향으로 요소 배치 */
+    flex: 1;
+    border: 1px solid;
+}
+
+.left,
+.right {
+    flex: 1;
+    box-sizing: border-box;
+}
+
+
+.right > .CoinTable {
+    color: black;
+}
+
+
+.AddStartMoney {
+    height: 80px;
+    width: 350px;
+}
+
+.AddStartMoney-text{
+    flex: 0 0 auto;
+    margin-right: 10px;
+}
+
+.AddStartMoney-b{
+    flex: 0 0 auto;
+}
+
+.AddMoneyb {
+    font-size: 12px;
+    padding: 5px 10px;
+    border-radius: 5px;
+    width: 5px;
+    height: 5px;
+  }
+  
+  .AddStartMoneyText {
+    flex: 1;
+    padding: 5px;
+    border-radius: 5px;
+  }

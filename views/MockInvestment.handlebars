@@ -5,6 +5,29 @@
 </noscript>
 <script src="https://cdn.socket.io/socket.io-3.0.1.min.js"></script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<style>
+	/* 로딩창 스타일 */
+	.loading {
+		position: fixed;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		background-color: rgba(0, 0, 0, 0.5);
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		z-index: 9999;
+	}
+
+	.loading:after {
+		content: '로딩중...';
+		color: white;
+		font-size: 2rem;
+		font-weight: bold;
+		margin-left: 1rem;
+	}
+</style>
 <!-- Main -->
 <div id="main">
 
@@ -14,9 +37,7 @@
 		<div class="tradingview-widget-container" style="height:75%; width: 80%; display:inline-block; margin:10px;">
 			<div id="tradingview_1fdf8"></div>
 			<script src="https://s3.tradingview.com/tv.js"></script>
-			<script src="/socket.io/socket.io.js"></script>
 			<script type="text/javascript">
-				const socket = io();
 				let a = new TradingView.widget(
 					{
 						"autosize": true,
@@ -32,38 +53,17 @@
 						"container_id": "tradingview_1fdf8"
 					}
 				);
-				function show() {
-					var valuestr = document.getElementById('krnameaa');
-					var chstr = valuestr.options[valuestr.selectedIndex].id
-					a = new TradingView.widget(
-						{
-							"autosize": true,
-							"symbol": "UPBIT:" + chstr,
-							"interval": "3",
-							"timezone": "Asia/Seoul",
-							"theme": "light",
-							"style": "1",
-							"locale": "kr",
-							"toolbar_bg": "#f1f3f6",
-							"enable_publishing": true,
-							"allow_symbol_change": true,
-							"container_id": "tradingview_1fdf8"
-						}
-					);
-
-
-				}
 			</script>
 
 			<form method='post'>
 				<input type="submit" button style="width:49.7%;height:auto;" value="매수" name="submit"
-					onclick='this.form.action ="/buycoin"'>
+					onclick='this.form.action ="/buycoinFunc"'>
 				<input type="submit" button style="width:49.7%;height:auto;" value="매도" name="submit"
-					onclick='this.form.action ="/sellcoin"'>
+					onclick='this.form.action ="/sellcoinFunc"'>
 
 		</div>
 		<div class="tradingview-check" style="height:auto; width:17%; display:inline-block;">
-			<input type="text" name="coinquantity" id="coinquantity" placeholder="개수 입력" onkeyup="coinquantityCal();">
+			<input type="text" name="coinQuantity" id="coinQuantity" placeholder="개수 입력" onkeyup="coinQuantityCal();">
 			<input type="text" name="pay" id="pay" placeholder="매수 가격" onkeyup="payCal();">
 			<input type="text" name="totalpay" id="totalpay" placeholder="매수 총액" onkeyup="totalpayCal();">
 			<input type="hidden" name="coin" value="BTC-KRW" id="selectcoin">
@@ -71,13 +71,14 @@
 		</form>
 	</section>
 	<form method="post">
+		<div>Rsi 자동매매</div>
 		종목 : <input type="text" name="kind" id="kind" placeholder="종목">
 		매수 지점 : <input type="text" name="buypoint" id="buy" placeholder="매수 지점">
 		매도 지점 : <input type="text" name="sellpoint" id="sell" placeholder="매도 지점">
-		<input type="submit" value="시작" name="submit" onclick='this.form.action ="/startm"'>
+		<input type="submit" value="시작" name="submit" onclick='this.form.action ="/startmacro"'>
 		<input type="submit" value="종료" name="submit" onclick='this.form.action ="/stopm"'>
 	</form>
-
+	<button id="getDataButton" class="btn">Rsi 30%이하 목록 확인</button>
 	<!-- 수정 - 테이블 항목에서 코인 이름별 금액에 대한 내용 제거 -->
 	<section id="content2">
 		<span class="tabB">
@@ -90,14 +91,7 @@
 					<col width="100">
 					<col width="*">
 				</colgroup>
-				<thead>
-					<tr>
-						<th colspan="3"><a href="#">한글명</a></th>
-						<th><a href="#">현재가</a></th>
-						<th><a href="#">전일대비</a></th>
-						<th><a href="#">거래대금</a></th>
-					</tr>
-				</thead>
+
 			</table>
 			<div class="scrollB">
 				<div style="position: relative; overflow: hidden; width: 100%; height: 400px;">
@@ -123,7 +117,7 @@
 													style="top: 13.2px; height: 1px;">-</span>
 											</div>
 										</a></td>
-									<td class="tit" onClick="location.href='{{this}}'" onchange="show()">
+									<td class="tit" onClick="location.href='{{this}}'">
 										<strong value="{{this}}">{{this}}</strong></a><em>
 									<td>
 									</td>
@@ -161,26 +155,24 @@
 </div>
 </div>
 
-
-
 <script>
-	var coinquantityCal = () => {
-		var coinquantity = document.getElementById('coinquantity').value;
+	var coinQuantityCal = () => {
+		var coinQuantity = document.getElementById('coinQuantity').value;
 		var pay = document.getElementById('pay').value;
 		var totalpay = document.getElementById('totalpay');
-		totalpay.value = (coinquantity * pay).toFixed(8)
+		totalpay.value = (coinQuantity * pay).toFixed(8)
 	};
 	var totalpayCal = () => {
-		var coinquantity = document.getElementById('coinquantity');
+		var coinQuantity = document.getElementById('coinQuantity');
 		var pay = document.getElementById('pay').value;
 		var totalpay = document.getElementById('totalpay').value;
-		coinquantity.value = (totalpay / pay).toFixed(8)
+		coinQuantity.value = (totalpay / pay).toFixed(8)
 	};
 	var payCal = () => {
-		var coinquantity = document.getElementById('coinquantity').value;
+		var coinQuantity = document.getElementById('coinQuantity').value;
 		var pay = document.getElementById('pay').value;
 		var totalpay = document.getElementById('totalpay');
-		totalpay.value = (coinquantity * pay).toFixed(8)
+		totalpay.value = (coinQuantity * pay).toFixed(8)
 	};
 	var selectcoin = document.getElementById('selectcoin');
 	let kind = document.getElementById('kind')
@@ -235,15 +227,34 @@
 			let setpay = document.getElementById('pay')
 			setpay.value = recvData['trade_price']
 
-			var coinquantity = document.getElementById('coinquantity').value;
+			var coinQuantity = document.getElementById('coinQuantity').value;
 			var pay = document.getElementById('pay').value;
 			var totalpay = document.getElementById('totalpay');
-			totalpay.value = (coinquantity * pay).toFixed(8)
+			totalpay.value = (coinQuantity * pay).toFixed(8)
 		}
 		setInterval(print, 1000);
 
 	}
 	start()
+</script>
 
+<script>
+  function handleClick() {
+    const loading = document.createElement('div');
+    loading.classList.add('loading');
+    document.body.appendChild(loading);
 
+    fetch('/api/data')
+      .then(response => response.json())
+      .then(data => {
+        console.log(data[0]);
+        console.log(data);
+        alert(data.toString());
+        loading.remove();
+      })
+      .catch(error => console.error(error));
+  }
+
+  const btn = document.querySelector('.btn');
+  btn.addEventListener('click', handleClick);
 </script>
