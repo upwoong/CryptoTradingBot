@@ -24,6 +24,7 @@ router.post('/SignIn', async (req, res) => {
     res.cookie('token', token, { httpOnly: true })
     res.redirect("MockInvestment/BTCKRW")
 })
+
 router.post('/stopm', verifyToken, async (req, res) => {
   try {
     let stopmacro = await require(`./macrofolder/${getUserNameFromCookie(req)}.js`)
@@ -114,8 +115,6 @@ router.post('/buycoinFunc', verifyToken, async function (req, res) {
     const selectcoin = req.body.coin.replace("KRW", "-KRW").split('-').reverse().join('-');
     const coinQuantity = Number(Number(req.body.coinQuantity).toFixed(4))
     const pay = Number(Number(req.body.pay).toFixed(4))
-    console.log(selectcoin)
-    console.log(coinQuantity)
     if (!selectcoin || !coinQuantity) {
         return res.send(`<script>alert('빈 공간이 있습니다.');location.href='MockInvestment/${req.body.coin}';</script>`);
     }
@@ -205,7 +204,7 @@ router.get('/InvestmentDetails', verifyToken, async function (req, res) {
     }
 })
 
-router.get('/api/data', async (req, res) => {
+router.get('/showListBelow30Percent', async (req, res) => {
     const RsiList = await getRSI.showListBelow30Percent(rsiList)
     res.json(RsiList)
 });

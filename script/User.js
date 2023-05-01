@@ -67,7 +67,6 @@ const getInvestmentDetails = async (userId) => {
         const userTransaction = await mongo.userTransaction.findOne({
             userName: userId,
         })
-        console.log(userTransaction)
         return userTransaction.transaction
     } finally {
         await mongo.closeDB()
