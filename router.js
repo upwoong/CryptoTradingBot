@@ -1,102 +1,20 @@
-const express = require('express')
-    , path = require('path')
-const expressHandlebars = require('express-handlebars')
-const app = express()
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
-const fs = require('fs');
-const cors = require('cors')
-const session = require('express-session')
-const cookieParser = require('cookie-parser')
-const passport = require('passport')
-const LocalStrategy = require('passport-local').Strategy
-
-passport.use(new LocalStrategy(
-    async function (username, password, done) {
-        const User = (await UserModel.findUser(req.body.id, req.body.pw, true)).User
-
-        if (!User) {
-            return done(null, false)
-        }
-        if (!User) {
-
-        }
-    }
-))
-app.use(cors({
-    origin: true,
-    credentials: true
-}))
-const process = require('process')
-process.setMaxListeners(15);
-app.use(cookieParser())
-app.use(
-    session({
-        key: "logindata",
-        secret: "secretuser",
-        resave: false,
-        saveUninitialized: false,
-        cookie: {
-            maxAge: (3.6e+6) * 24
-        },
-    })
-)
-
-const port = process.env.PORT || 8006
-app.engine('handlebars', expressHandlebars.engine({
-    defaultLayout: 'main',
-    runtimeOptions: {
-        allowProtoPropertiesByDefault: true,
-        allowProtoMethodsByDefault: true,
-    },
-}))
-app.set('view engine', 'handlebars')
-app.use(express.static(__dirname + '/public'))
-app.set('views', __dirname + '/views')
-let router = express.Router()
-app.use('/', router)
+const router = require('express').Router()
+const fs = require('fs')
+const { verifyToken, getUserNameFromCookie, krName, rsiList } = require('./server');
 const jwt = require("jsonwebtoken");
 
-//app.disable('x-powered-by'); 혹시 모르니깐 납둠
-
 const mongo = require("./script/mongo")
-
-let krName = new Array()
-let rsiList = new Array()
+const UserModel = require("./script/User")
 const getRSI = require('./script/RsiFunc')
 const CoinFunc = require('./script/CoinFunc')
-const UserModel = require("./script/User")
-
-init() //초기설정
-async function init() {
-    const CallFetch = await fetch(`https://api.upbit.com/v1/market/all?isDetails=false`)
-    const body = await CallFetch.json()
-    for (let i = 0; i < body.length; i++) {
-        rsiList.push(body[i].market)
-        krName.push(body[i].korean_name)
-    }
-}
-
-function getUserNameFromCookie(req) {
-    const token = req.cookies.token;
-    const decoded = jwt.verify(token, 'secret_key');
-    const userName = decoded.username;
-    console.log(userName)
-    return userName;
-  }
-
 const bcrypt = require('bcrypt');
-
-
-
-app.post('/SignIn', async (req, res) => {
-    const { id, pw } = req.body;
+router.post('/SignIn', async (req, res) => {
+    const { id, pw } = req.body
     const user = (await UserModel.findUser(id,pw)).User
     if (!user) {
         return res.status(404).send('User not found');
     }
    
-
     const isMatch = await bcrypt.compare(pw, user.Password);
     if (!isMatch) {
         return res.send(`<script>alert('유저 없음');location.href='SignIn';</script>`);
@@ -105,40 +23,22 @@ app.post('/SignIn', async (req, res) => {
     const token = jwt.sign({ username: user.userName }, 'secret_key');
     res.cookie('token', token, { httpOnly: true })
     res.redirect("MockInvestment/BTCKRW")
-});
-
-function verifyToken(req, res, next) {
-    // 쿠키에서 토큰 추출
-    const token = req.cookies.token;
-
-    // 토큰이 없으면 인증 실패 처리
-    if (!token) {
-        return res.redirect('SignIn')
-    }
-    console.log("123123")
-    console.log(token)
-    try {
-        // 토큰 검증
-        const verified = jwt.verify(token, 'secret_key');
-        req.user = verified;
-        next();
-    } catch (err) {
-        res.status(400).send('Invalid Token');
-    }
-}
-
-app.post('/stopm', verifyToken, async function (req, res) {
+})
+router.post('/stopm', verifyToken, async (req, res) => {
+  try {
     let stopmacro = await require(`./macrofolder/${getUserNameFromCookie(req)}.js`)
     stopmacro.stopclock()
     await fs.unlinkSync(`cpt/macrofolder/${getUserNameFromCookie(req)}.js`, (err) => {
-        console.log("delete")
+      console.log("delete")
     })
     await mongo.closeDB()
     res.redirect('MockInvestment/BTCKRW')
-})
+  } catch (err) {
+    console.log(err)
+  }
+});
 
-
-app.post('/startmacro', verifyToken, async function (req, res) {
+router.post('/startmacro', verifyToken, async function (req, res) {
     const coinName = req.body.kind
     const Name = getUserNameFromCookie(req)  //닉네임
     const buypoint = req.body.buypoint //매수지점
@@ -210,7 +110,7 @@ app.post('/startmacro', verifyToken, async function (req, res) {
     res.redirect('MockInvestment/BTCKRW')
 })
 
-app.post('/buycoinFunc', verifyToken, async function (req, res) {
+router.post('/buycoinFunc', verifyToken, async function (req, res) {
     const selectcoin = req.body.coin.replace("KRW", "-KRW").split('-').reverse().join('-');
     const coinQuantity = Number(Number(req.body.coinQuantity).toFixed(4))
     const pay = Number(Number(req.body.pay).toFixed(4))
@@ -238,7 +138,7 @@ app.post('/buycoinFunc', verifyToken, async function (req, res) {
 })
 
 
-app.post('/sellcoinFunc', verifyToken, async function (req, res) {
+router.post('/sellcoinFunc', verifyToken, async function (req, res) {
     const selectcoin = req.body.coin.replace("KRW", "-KRW").split('-').reverse().join('-');
     const coinQuantity = Number(Number(req.body.coinQuantity).toFixed(4))
     const pay = Number(Number(req.body.pay).toFixed(4))
@@ -262,12 +162,12 @@ app.post('/sellcoinFunc', verifyToken, async function (req, res) {
         return res.status(500).send(`<script>alert('오류가 발생했습니다. 잠시 후 다시 시도해주세요.');location.href='MockInvestment/${req.body.coin}';</script>`);
     }
 });
-app.post('/AddMoney', verifyToken, async (req, res) => {
+router.post('/AddMoney', verifyToken, async (req, res) => {
     CoinFunc.AddMoney(getUserNameFromCookie(req), req.body.Money)
     res.redirect("CoinWallet")
 })
 
-app.post('/SignUp', async (req, res) => {
+router.post('/SignUp', async (req, res) => {
     const hashedPassword = await bcrypt.hash(req.body.pw, 10);
     await UserModel.createUser(req.body.id, hashedPassword, req.body.name, req.body.startday)
     try {
@@ -278,22 +178,22 @@ app.post('/SignUp', async (req, res) => {
     }
 });
 
-app.get('/signin', function (req, res) {
+router.get('/signin', function (req, res) {
     res.render('SignIn')
 })
 
-app.get('/signup', function (req, res) {
+router.get('/signup', function (req, res) {
     res.render('SignUp')
 })
 
-app.get('/MockInvestment/:coin', function (req, res) {
+router.get('/MockInvestment/:coin', function (req, res) {
     let coin = req.params.coin
     if (coin == null) { coin = "BTC" }
     res.render('MockInvestment', { krname: krName, market: rsiList, coin: coin })
 
 })
 
-app.get('/InvestmentDetails', verifyToken, async function (req, res) {
+router.get('/InvestmentDetails', verifyToken, async function (req, res) {
     try {
         const transaction = await UserModel.getInvestmentDetails(getUserNameFromCookie(req))
         console.log(transaction)
@@ -305,55 +205,21 @@ app.get('/InvestmentDetails', verifyToken, async function (req, res) {
     }
 })
 
-app.get('/api/data', async (req, res) => {
+router.get('/api/data', async (req, res) => {
     const RsiList = await getRSI.showListBelow30Percent(rsiList)
     res.json(RsiList)
 });
 
-app.get('/CoinWallet', verifyToken, async function (req, res) {
+router.get('/CoinWallet', verifyToken, async function (req, res) {
     let returnvalue = await CoinFunc.GetHoldCoin(getUserNameFromCookie(req));
     res.render('CoinWallet', {
-        CoinWallet: returnvalue.coinArray,
-        TotalMoney: returnvalue.totalMoney,
-        HoldMoney: returnvalue.holdMoney,
-        StartMoney: returnvalue.startMoney,
+        coinWallet: returnvalue.coinArray,
+        totalMoney: returnvalue.totalMoney,
+        holdMoney: returnvalue.holdMoney,
+        startMoney: returnvalue.startMoney,
     });
 });
 
-app.use((req, res) => {
-    res.type('text/plain')
-    res.status(404)
-    res.send('404 - Page Not Found')
-})
-
-// custom 500 page
-app.use((err, req, res, next) => {
-    console.error(err.message)
-    res.type('text/plain')
-    res.status(500)
-    res.send('500 - Server Error')
-})
-
-async function startServer() {
-    try {
-        await mongo.connectDB();
-        app.listen(port, () => {
-            console.log(`서버 시작: http://localhost:${port}`);
-        });
-        /*
-            axios.post('http://localhost:8006/SignIn', {
-                username: '123as',
-                password: 'testpassword',
-              }).then((res) => {
-                console.log(res.data);
-              }).catch((err) => {
-                console.log("err");
-              });
-              */
-    } catch (err) {
-        console.error('서버 시작 중 오류 발생:', err);
-    }
+module.exports ={
+    router : router
 }
-
-startServer();
-

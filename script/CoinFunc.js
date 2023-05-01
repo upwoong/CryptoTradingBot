@@ -4,27 +4,27 @@ const User = require("./User")
 module.exports.GetHoldCoin = async function (name) {
     try {
         await mongo.connectDB()
-        const userWallet = await mongo.userWallet.findOne({ Username: name })
-        let CoinArray = userWallet.holdCoin;
-        let TotalMoney = userWallet.Money;
-        let HoldMoney = userWallet.Money;
-        let StartMoney = userWallet.StartMoney;
+        const userWallet = await mongo.userWallet.findOne({ userName: name })
+        let coinArray = userWallet.holdCoin;
+        let totalMoney = userWallet.Money;
+        let holdMoney = userWallet.Money;
+        let startMoney = userWallet.startMoney;
         for (let i = 0; i < userWallet.holdCoin.length; i++) {
-            TotalMoney += userWallet.holdCoin[i].coinQuantity * userWallet.holdCoin[i].coinBuyPrice;
+            totalMoney += userWallet.holdCoin[i].coinQuantity * userWallet.holdCoin[i].coinBuyPrice;
         }
         return {
-            CoinArray: CoinArray,
-            TotalMoney: TotalMoney,
-            HoldMoney: HoldMoney,
-            StartMoney: StartMoney,
+            coinArray: coinArray,
+            totalMoney: totalMoney,
+            holdMoney: holdMoney,
+            startMoney: startMoney,
         };
     } catch (error) {
         console.error(error);
         return {
-            CoinArray: [],
-            TotalMoney: 0,
-            HoldMoney: 0,
-            StartMoney: 0,
+            coinArray: [],
+            totalMoney: 0,
+            holdMoney: 0,
+            startMoney: 0,
         };
     } finally {
         await mongo.closeDB()

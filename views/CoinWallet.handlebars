@@ -11,8 +11,8 @@
 				<div class="left">
 					<div class="left-top">
 						<h2>현재 정보</h2>
-						<div>시작 금액 : {{StartMoney}}</div>
-						<div>현재 남은 금액 : {{HoldMoney}}</div>
+						<div>시작 금액 : {{startMoney}}</div>
+						<div>현재 남은 금액 : {{holdMoney}}</div>
 						<div>총액 :</div>
 						<div class = "AddMoneyDiv">
 							<div class="AddStartMoney">
@@ -29,15 +29,15 @@
 					<div class="left-bottom">
 						<h2>수익</h2>
 						<div class="profit">
-							{{StartMoney}} - {{TotalMoney}}
+							{{startMoney}} - {{totalMoney}}
 						</div>
+						<div>수익 (가격,%)</div>
 						<div id="result">
 							0
 						</div>
 						<div id="PercentResult">
 							0
 						</div>
-						<p>수익 (가격,%)</p>
 					</div>
 				</div>
 				<div class="right">
@@ -46,16 +46,16 @@
 						<th>코인</th>
 						<th>수량</th>
 						<th>평균단가</th>
-						{{#each CoinWallet}}
+						{{#each coinWallet}}
 						<tr>
 							<td>
-								{{coinname}}
+								{{coinName}}
 							</td>
 							<td>
-								{{coinquantity}}
+								{{coinQuantity}}
 							</td>
 							<td>
-								{{coinbuyprice}}
+								{{coinBuyPrice}}
 							</td>
 						</tr>
 						{{/each}}
