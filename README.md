@@ -144,9 +144,8 @@ node server.js
    }
 ```
 
-아두이노로부터 받은 데이터를 데이터베이스에 있는 데이터에 더하여 화면에 출력합니다.
 - 결과 화면
-<p align="center"><img src="https://github.com/upwoong/Wms/blob/main/Wms-screenshots/waterUseage.png?raw=true" width="400"></p>
+<p align="center"><img src="https://github.com/upwoong/CryptoTradingBot/blob/main/screenshots/buyCoin.png?raw=true" width="400"></p>
 
 ### 자동매매
 - 매수 및 매도 구간을 설정하여 시작할수 있습니다.
@@ -226,7 +225,7 @@ node server.js
 ```   
 
 - 결과 화면   
-![tradingbot](https://github.com/upwoong/Wms/blob/main/screenshots/tradingbot.png)
+![tradingbot](https://github.com/upwoong/CryptoTradingBot/blob/main/screenshots/tradingbot.png)
 
 ### RSI 목록 출력
 - RSI가 30%이하인 목록을 보여줍니다.
@@ -273,7 +272,7 @@ node server.js
 ```
 
 - 결과 화면   
-![showListBelow30Percent](https://github.com/upwoong/Wms/blob/main/screenshots/showListBelow30Percent.png)
+![showListBelow30Percent](https://github.com/upwoong/CryptoTradingBot/blob/main/screenshots/showListBelow30Percent.png)
 
 * * *
 
@@ -281,5 +280,3 @@ node server.js
 KKK : 프론트 엔드 구성 (80%)   
 
 * * *
-## 향후 계획
-일별 수전사용량의 모든 데이터를 게시판 형태로 보여주기
