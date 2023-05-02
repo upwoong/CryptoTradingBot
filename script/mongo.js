@@ -28,16 +28,40 @@ const userAccountSchema = new mongoose.Schema({
 })
 //코인 지갑
 const userWalletSchema = new mongoose.Schema({
-    userName: String,
-    startMoney : Number,
-    Money: Number,
-    buyCooltime: String,
-    holdCoin: [{
-        coinName: String, //코인이름
-        coinQuantity: Number, //보유수량
-        coinBuyPrice: Number, //구매가격
-    }]
-})
+  userName: String,
+  startMoney: {
+    type: mongoose.Schema.Types.Decimal128,
+    get: function (v) {
+      return v ? parseFloat(v.toString()) : null; // v가 null이 아닌 경우만 toFixed 메소드를 적용
+    },
+    set: v => parseFloat(v.toFixed(3)),
+  },
+  Money: {
+    type: mongoose.Schema.Types.Decimal128,
+    get: function (v) {
+      return v ? parseFloat(v.toString()) : null; // v가 null이 아닌 경우만 toFixed 메소드를 적용
+    },
+    set: v => parseFloat(v.toFixed(3)),
+  },
+  buyCooltime: String,
+  holdCoin: [{
+    coinName: String,
+    coinQuantity: {
+      type: mongoose.Schema.Types.Decimal128,
+      get: function (v) {
+        return v ? parseFloat(v.toString()) : null; // v가 null이 아닌 경우만 toFixed 메소드를 적용
+      },
+      set: v => parseFloat(v.toFixed(3)),
+    },
+    coinBuyPrice: {
+      type: mongoose.Schema.Types.Decimal128,
+      get: function (v) {
+        return v ? parseFloat(v.toString()) : null; // v가 null이 아닌 경우만 toFixed 메소드를 적용
+      },
+      set: v => parseFloat(v.toFixed(3)),
+    },
+  }],
+});
 //투자내역
 const userTransactionSchema = new mongoose.Schema({
     userName: String,

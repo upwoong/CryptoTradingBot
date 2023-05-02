@@ -46,9 +46,9 @@ router.post('/startmacro', verifyToken, async function (req, res) {
     const sellpoint = req.body.sellpoint //매도지점
     mongo.connectDB()
     console.log("실행중")
-    await fs.writeFile(`cpt/macrofolder/${Name}.js`, `const getjs = require('../script/RsiFunc')
-    const CoinFunc = require('../script/CoinFunc')
-    const User = require('../script/User')
+    await fs.writeFile(`macrofolder/${Name}.js`, `const getjs = require('../script/RsiFunc')
+    const coinFunc = require('../script/CoinFunc')
+    const userModel = require('../script/User')
     let colltime = true
     module.exports.boolean = false
 
@@ -65,16 +65,16 @@ router.post('/startmacro', verifyToken, async function (req, res) {
         }
         if (colltime) {
           colltime = false
-          const UserWallet = (await UserModel.findUser(Name)).Userwallet
+          const UserWallet = (await userModel.findUser(Name)).Userwallet
           //const coinQuantity = UserWallet.Money / coinvalue 
           if (getjs.getRSI(CurrentPriceArray).RSI < buypoint) {
-            let totalAssets = (await UserModel.findUser("123we")).Userwallet.holdCoin.find(item => item.coinName === Name).coinbuyprice * 0.1
+            let totalAssets = UserWallet.holdCoin.find(item => item.coinName === Name).coinbuyprice * 0.1
             coinQuantity = totalAssets / coinvalue
-            await CoinFunc.BuyFunc(Name, coinName, coinQuantity, coinvalue)
+            await coinFunc.BuyFunc(Name, coinName, coinQuantity, coinvalue)
           } else if (getjs.getRSI(CurrentPriceArray).RSI > sellpoint) {
-            let totalAssets = (await UserModel.findUser("123we")).Userwallet.holdCoin.find(item => item.coinName === Name).coinQuantity
+            let totalAssets = UserWallet.holdCoin.find(item => item.coinName === Name).coinQuantity
             coinQuantity = 2 / totalAssets
-            await CoinFunc.SellFunc(Name, coinName, coinQuantity, coinvalue)
+            await coinFunc.SellFunc(Name, coinName, coinQuantity, coinvalue)
           }
           setTimeout(() => changef(), 10000);
         }

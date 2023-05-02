@@ -29,7 +29,7 @@
 					<div class="left-bottom">
 						<h2>수익</h2>
 						<div class="profit">
-							{{holdMoney}} - {{startMoney}}
+							{{totalMoney}} - {{startMoney}}
 						</div>
 						<div>수익 (가격,%)</div>
 						<div id="result">
@@ -73,9 +73,9 @@
 	const PercentResult = document.getElementById('PercentResult');
 	const calculationResulta = parseInt(profitEl.textContent.trim().split(' - ')[0]) - parseInt(profitEl.textContent.trim().split(' - ')[1]);
 
-	const StartMoney = profitEl.textContent.trim().split(' - ')[0];
-	const TotalMoney = profitEl.textContent.trim().split(' - ')[1];
+	const StartMoney = profitEl.textContent.trim().split(' - ')[1];
+	const TotalMoney = profitEl.textContent.trim().split(' - ')[0];
 	resultEl.innerHTML = (TotalMoney - StartMoney).toFixed(2);
-	PercentResult.innerHTML = ((TotalMoney / StartMoney) * 100).toFixed(2) + "%";
+	PercentResult.innerHTML = (((TotalMoney - StartMoney) / StartMoney) * 100).toFixed(2) + "%";
 
 </script>

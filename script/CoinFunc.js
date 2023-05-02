@@ -6,15 +6,17 @@ module.exports.GetHoldCoin = async function (name) {
         await mongo.connectDB()
         const userWallet = await mongo.userWallet.findOne({ userName: name })
         let coinArray = userWallet.holdCoin;
-        let totalMoney = userWallet.Money;
+        let totalMoney = 0
         let holdMoney = userWallet.Money;
         let startMoney = userWallet.startMoney;
-        for (let i = 0; i < userWallet.holdCoin.length; i++) {
-            totalMoney += userWallet.holdCoin[i].coinQuantity * userWallet.holdCoin[i].coinBuyPrice;
+        for(let i =0;i<coinArray.length;i++){
+            const response = await fetch(`https://api.upbit.com/v1/candles/minutes/1?market=${coinArray[i].coinName}&count=1`) 
+            const body = await response.json()
+            totalMoney += coinArray[i].coinQuantity * body[0].trade_price 
         }
         return {
             coinArray: coinArray,
-            totalMoney: totalMoney,
+            totalMoney: totalMoney+holdMoney,
             holdMoney: holdMoney,
             startMoney: startMoney,
         };
