@@ -1,7 +1,6 @@
 require('dotenv').config({ path: './config.env' })
 
 const express = require('express')
-    , path = require('path')
 const expressHandlebars = require('express-handlebars')
 const app = express()
 app.use(express.json())
@@ -46,8 +45,6 @@ const mongo = require("./script/mongo")
 
 let krName = new Array()
 let rsiList = new Array()
-const UserModel = require("./script/User")
-
 
 init() //초기설정
 async function init() {
@@ -68,7 +65,7 @@ function getUserNameFromCookie(req) {
   }
 
 
-function verifyToken(req, res, next) {
+function verifyToken(req, res) {
     // 쿠키에서 토큰 추출
     const token = req.cookies.token
 
@@ -82,7 +79,6 @@ function verifyToken(req, res, next) {
         // 토큰 검증
         const verified = jwt.verify(token, 'secret_key')
         req.user = verified
-        next()
     } catch (err) {
         res.status(400).send('Invalid Token')
     }
@@ -95,9 +91,8 @@ app.use((req, res) => {
 })
 
 // custom 500 page
-app.use((err, req, res, next) => {
-    console.error(err.stack)
-    res.type('text/plain')
+app.use((req, res) => {
+    res.status('text/plain')
     res.status(500)
     res.send('500 - Server Error')
 })

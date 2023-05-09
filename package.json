@@ -30,5 +30,8 @@
     "start": "node ./web.js"
   },
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "devDependencies": {
+    "eslint": "^8.40.0"
+  }
 }

@@ -44,7 +44,6 @@ const showListBelow30Percent = async function (list) {
 }
 
 const getRSI = (priceArray) => { //RSI구하는 함수
-    let arraybody = ""
     let arrayCp = new Array()
     let arrayDp = new Array()
     let plusArray = new Array()

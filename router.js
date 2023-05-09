@@ -35,7 +35,7 @@ router.post('/stopm', verifyToken, async (req, res) => {
   try {
     let stopmacro = await require(`./macrofolder/${getUserNameFromCookie(req)}.js`)
     stopmacro.stopclock()
-    fs.unlinkSync(`cpt/macrofolder/${getUserNameFromCookie(req)}.js`, (err) => {
+    fs.unlinkSync(`cpt/macrofolder/${getUserNameFromCookie(req)}.js`, () => {
       console.log("delete")
     })
     await mongo.closeDB()
@@ -110,7 +110,7 @@ router.post('/startmacro', verifyToken, async function (req, res) {
                 console.error(err)
                 res.status(500).send('Error creating file')
             } else {
-                getjs = await require(`./macrofolder/${Name}.js`)
+                let getjs = await require(`./macrofolder/${Name}.js`)
                 setTimeout(() => {
                     getjs.start(Name, coinName, buypoint, sellpoint)
                 }, 1000)
