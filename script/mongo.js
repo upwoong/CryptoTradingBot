@@ -1,23 +1,23 @@
-const mongoose = require('mongoose');
+const mongoose = require('mongoose')
 const connectDB = async () => {
   try {
-    await mongoose.connect(`mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.ahlcp.mongodb.net/${process.env.DB_REPO}?retryWrites=true&w=majority`, { useNewUrlParser: true, useUnifiedTopology: true });
-    console.log("mongo db connection OK.");
-    return mongoose.connection;
+    await mongoose.connect(`mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.ahlcp.mongodb.net/${process.env.DB_REPO}?retryWrites=true&w=majority`, { useNewUrlParser: true, useUnifiedTopology: true })
+    console.log("mongo db connection OK.")
+    return mongoose.connection
   } catch (error) {
-    console.error(error);
+    console.error(error)
   }
-};
+}
 
 const closeDB = async () => {
     try {
         await mongoose.connection.close(function () {
-            console.log('Mongoose connection disconnected');
-          });
+            console.log('Mongoose connection disconnected')
+          })
     } catch (error) {
-      console.error(error);
+      console.error(error)
     }
-  };
+  }
 
 //유저 계정
 const userAccountSchema = new mongoose.Schema({
@@ -32,14 +32,14 @@ const userWalletSchema = new mongoose.Schema({
   startMoney: {
     type: mongoose.Schema.Types.Decimal128,
     get: function (v) {
-      return v ? parseFloat(v.toString()) : null; // v가 null이 아닌 경우만 toFixed 메소드를 적용
+      return v ? parseFloat(v.toString()) : null // v가 null이 아닌 경우만 toFixed 메소드를 적용
     },
     set: v => parseFloat(v.toFixed(3)),
   },
   Money: {
     type: mongoose.Schema.Types.Decimal128,
     get: function (v) {
-      return v ? parseFloat(v.toString()) : null; // v가 null이 아닌 경우만 toFixed 메소드를 적용
+      return v ? parseFloat(v.toString()) : null // v가 null이 아닌 경우만 toFixed 메소드를 적용
     },
     set: v => parseFloat(v.toFixed(3)),
   },
@@ -49,19 +49,19 @@ const userWalletSchema = new mongoose.Schema({
     coinQuantity: {
       type: mongoose.Schema.Types.Decimal128,
       get: function (v) {
-        return v ? parseFloat(v.toString()) : null; // v가 null이 아닌 경우만 toFixed 메소드를 적용
+        return v ? parseFloat(v.toString()) : null // v가 null이 아닌 경우만 toFixed 메소드를 적용
       },
       set: v => parseFloat(v.toFixed(3)),
     },
     coinBuyPrice: {
       type: mongoose.Schema.Types.Decimal128,
       get: function (v) {
-        return v ? parseFloat(v.toString()) : null; // v가 null이 아닌 경우만 toFixed 메소드를 적용
+        return v ? parseFloat(v.toString()) : null // v가 null이 아닌 경우만 toFixed 메소드를 적용
       },
       set: v => parseFloat(v.toFixed(3)),
     },
   }],
-});
+})
 //투자내역
 const userTransactionSchema = new mongoose.Schema({
     userName: String,
@@ -94,11 +94,11 @@ module.exports = {
 
 module.exports.pushtransaction = class pushtransaction {
     constructor(Kind, coinName, coinQuantity, coinBuyPrice, pricereturn) {
-        this.Date = new Date();
-        this.Kind = Kind;
-        this.coinName = coinName;
-        this.coinQuantity = coinQuantity;
-        this.coinBuyPrice = coinBuyPrice;
+        this.Date = new Date()
+        this.Kind = Kind
+        this.coinName = coinName
+        this.coinQuantity = coinQuantity
+        this.coinBuyPrice = coinBuyPrice
         this.pricereturn = pricereturn
     }
 }

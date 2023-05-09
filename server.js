@@ -1,12 +1,11 @@
-require('dotenv').config({ path: './config.env' });
+require('dotenv').config({ path: './config.env' })
 
 const express = require('express')
     , path = require('path')
 const expressHandlebars = require('express-handlebars')
 const app = express()
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
-const fs = require('fs');
+app.use(express.json())
+app.use(express.urlencoded({ extended: true }))
 const cors = require('cors')
 const session = require('express-session')
 const cookieParser = require('cookie-parser')
@@ -16,7 +15,7 @@ app.use(cors({
     credentials: true
 }))
 const process = require('process')
-process.setMaxListeners(15);
+process.setMaxListeners(15)
 app.use(cookieParser())
 app.use(
     session({
@@ -41,8 +40,7 @@ app.engine('handlebars', expressHandlebars.engine({
 app.set('view engine', 'handlebars')
 app.use(express.static(__dirname + '/public'))
 app.set('views', __dirname + '/views')
-const jwt = require("jsonwebtoken");
-//app.disable('x-powered-by'); 혹시 모르니깐 납둠
+const jwt = require("jsonwebtoken")
 
 const mongo = require("./script/mongo")
 
@@ -62,17 +60,17 @@ async function init() {
 }
 
 function getUserNameFromCookie(req) {
-    const token = req.cookies.token;
-    const decoded = jwt.verify(token, 'secret_key');
-    const userName = decoded.username;
+    const token = req.cookies.token
+    const decoded = jwt.verify(token, 'secret_key')
+    const userName = decoded.username
     console.log(userName)
-    return userName;
+    return userName
   }
 
 
 function verifyToken(req, res, next) {
     // 쿠키에서 토큰 추출
-    const token = req.cookies.token;
+    const token = req.cookies.token
 
     // 토큰이 없으면 인증 실패 처리
     if (!token) {
@@ -82,33 +80,37 @@ function verifyToken(req, res, next) {
     console.log(token)
     try {
         // 토큰 검증
-        const verified = jwt.verify(token, 'secret_key');
-        req.user = verified;
-        next();
+        const verified = jwt.verify(token, 'secret_key')
+        req.user = verified
+        next()
     } catch (err) {
-        res.status(400).send('Invalid Token');
+        res.status(400).send('Invalid Token')
     }
 }
+// custom 404 page
+app.use((req, res) => {
+    res.type('text/plain')
+    res.status(404)
+    res.send('404 - Not Found')
+})
+
+// custom 500 page
+app.use((err, req, res, next) => {
+    console.error(err.stack)
+    res.type('text/plain')
+    res.status(500)
+    res.send('500 - Server Error')
+})
+
 
 async function startServer() {
     try {
-        await mongo.connectDB();
+        await mongo.connectDB()
         app.listen(port, () => {
-            console.log(`서버 시작: http://localhost:${port}`);
-
-        });
-        /*
-            axios.post('http://localhost:8006/SignIn', {
-                username: '123as',
-                password: 'testpassword',
-              }).then((res) => {
-                console.log(res.data);
-              }).catch((err) => {
-                console.log("err");
-              });
-              */
+            console.log(`서버 시작: http://localhost:${port}`)
+        })
     } catch (err) {
-        console.error('서버 시작 중 오류 발생:', err);
+        console.error('서버 시작 중 오류 발생:', err)
     }
 }
 
@@ -120,4 +122,4 @@ module.exports = {
 }
 let routes = require('./router')
 app.use('/',routes.router)
-startServer();
+startServer()

@@ -5,10 +5,10 @@ module.exports.GetHoldCoin = async function (name) {
     try {
         await mongo.connectDB()
         const userWallet = await mongo.userWallet.findOne({ userName: name })
-        let coinArray = userWallet.holdCoin;
+        let coinArray = userWallet.holdCoin
         let totalMoney = 0
-        let holdMoney = userWallet.Money;
-        let startMoney = userWallet.startMoney;
+        let holdMoney = userWallet.Money
+        let startMoney = userWallet.startMoney
         for(let i =0;i<coinArray.length;i++){
             const response = await fetch(`https://api.upbit.com/v1/candles/minutes/1?market=${coinArray[i].coinName}&count=1`) 
             const body = await response.json()
@@ -19,19 +19,19 @@ module.exports.GetHoldCoin = async function (name) {
             totalMoney: totalMoney+holdMoney,
             holdMoney: holdMoney,
             startMoney: startMoney,
-        };
+        }
     } catch (error) {
-        console.error(error);
+        console.error(error)
         return {
             coinArray: [],
             totalMoney: 0,
             holdMoney: 0,
             startMoney: 0,
-        };
+        }
     } finally {
         await mongo.closeDB()
     }
-};
+}
 
 
 module.exports.SellFunc = async function (Name, selectcoin, coinQuantity, coinvalue) {
@@ -41,32 +41,32 @@ module.exports.SellFunc = async function (Name, selectcoin, coinQuantity, coinva
     console.log("Name" + Name)
     console.log("sle" + selectcoin)
     if (users) {
-        users.Money += (coinQuantity * coinvalue);
+        users.Money += (coinQuantity * coinvalue)
         for (let i = 0; i < users.holdCoin.length; i++) {
             if (users.holdCoin[i].coinName === selectcoin) {
                 if (users.holdCoin[i].coinQuantity >= coinQuantity) {
-                    const pricereturn = (coinvalue - users.holdCoin[i].coinBuyPrice) * coinQuantity;
+                    const pricereturn = (coinvalue - users.holdCoin[i].coinBuyPrice) * coinQuantity
 
-                    users.holdCoin[i].coinBuyPrice = (users.holdCoin[i].coinQuantity * users.holdCoin[i].coinBuyPrice + coinvalue * (coinQuantity * -1)) / (users.holdCoin[i].coinQuantity + (coinQuantity * -1));
-                    users.holdCoin[i].coinQuantity -= coinQuantity;
+                    users.holdCoin[i].coinBuyPrice = (users.holdCoin[i].coinQuantity * users.holdCoin[i].coinBuyPrice + coinvalue * (coinQuantity * -1)) / (users.holdCoin[i].coinQuantity + (coinQuantity * -1))
+                    users.holdCoin[i].coinQuantity -= coinQuantity
 
                     if (users.holdCoin[i].coinQuantity <= 0) {
-                        users.holdCoin.splice(i, 1);
+                        users.holdCoin.splice(i, 1)
                     }
 
-                    const objtra = new mongo.pushtransaction("매도", selectcoin, coinQuantity, coinvalue, pricereturn);
-                    nick.transaction.push(objtra);
+                    const objtra = new mongo.pushtransaction("매도", selectcoin, coinQuantity, coinvalue, pricereturn)
+                    nick.transaction.push(objtra)
                 } else {
-                    return 2; //개수가 많음
+                    return 2 //개수가 많음
                 }
             }
         }
-        await users.save();
-        await nick.save();
+        await users.save()
+        await nick.save()
 
-        return 1; //완료
+        return 1 //완료
     } else {
-        return 3; // 회원정보 틀림
+        return 3 // 회원정보 틀림
     }
 }
 
@@ -123,12 +123,12 @@ module.exports.GetholdCoinAsync = async (name) => {
     try {
         await mongo.connectDB()
         const userWallet = await mongo.userWallet.findOne({ Username: name })
-        let coinArray = userWallet.holdCoin;
-        let totalMoney = userWallet.Money;
-        let holdMoney = userWallet.Money;
-        let startMoney = userWallet.startMoney;
+        let coinArray = userWallet.holdCoin
+        let totalMoney = userWallet.Money
+        let holdMoney = userWallet.Money
+        let startMoney = userWallet.startMoney
         for (let i = 0; i < userWallet.holdCoin.length; i++) {
-            totalMoney += userWallet.holdCoin[i].coinQuantity * userWallet.holdCoin[i].coinBuyPrice;
+            totalMoney += userWallet.holdCoin[i].coinQuantity * userWallet.holdCoin[i].coinBuyPrice
         }
         return {
             coinArray: coinArray,
@@ -137,13 +137,13 @@ module.exports.GetholdCoinAsync = async (name) => {
             startMoney: startMoney,
         };
     } catch (error) {
-        console.error(error);
+        console.error(error)
         return {
             coinArray: [],
             totalMoney: 0,
             holdMoney: 0,
             startMoney: 0,
-        };
+        }
     } finally {
         await mongo.closeDB()
     }
